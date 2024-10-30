@@ -1,0 +1,140 @@
+<resources>
+    <string name="app_name">NativeEletrichouse</string>
+    <string name="Return_Icon">ReturnIcon</string>
+    <string name="Name_app">EletricHouse</string>
+    <string name="calcular">Calcular</string>
+    <string name="inserir">Inserir</string>
+    <string name="iluminacao">Iluminacao</string>
+    <string name="InfoGeral">Info-Geral</string>
+    <string name="ArCond">Ar-cond</string>
+    <string name="EscolherAmbiente">Escolher Ambiente</string>
+    <string name="QualTensao">Tensão/Volts Da Cidade ?</string>
+
+    <string-array name ="ListaAmbientes">
+
+        <item>Escolher Ambiente</item>
+        <item>Banheiro</item>
+        <item>Escada/Dispensa/Garagem</item>
+        <item>Cozinha</item>
+        <item>Sala de Escritório</item>
+        <item>Salas de Recepcão</item>
+        <item>Salas de Conferencia</item>
+        <item>Guiches</item>
+        <item>Arquivos</item>
+        <item>Sala de Jantar</item>
+        <item>Sala de Estar</item>
+        <item>Sala de Estudo</item>
+        <item>Sala de uso Geral</item>
+        <item>Galpões</item>
+        <item>Quarto</item>
+        <item>Lojas</item>
+        <item>Lojas Vitrines</item>
+        <item>Circulacão</item>
+        <item>Cantinas</item>
+
+
+    </string-array>
+
+    <string-array name ="Tensao">
+        <item>Tensao</item>
+        <item>110</item>
+        <item>220</item>
+    </string-array>
+
+    <string-array name ="Numeros">
+        <item>QTDE-Pessoa</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+
+    <string-array name ="ListaLuminaria">
+        <item>Potencia Luminaria</item>
+        <item>4,5</item>
+        <item>4,7</item>
+        <item>4,8</item>
+        <item>5,0</item>
+        <item>6,0</item>
+        <item>7,0</item>
+        <item>7,5</item>b
+        <item>8,0</item>
+        <item>9,0</item>
+        <item>10,0</item>
+        <item>12,0</item>
+        <item>14,0</item>
+        <item>15,0</item>
+        <item>16,0</item>
+        <item>17,0</item>
+        <item>20,0</item>
+        <item>23,0</item>
+        <item>24,0</item>
+        <item>25,0</item>
+        <item>27,0</item>
+        <item>30,0</item>
+        <item>35,0</item>
+        <item>37,0</item>
+        <item>40,0</item>
+        <item>42,0</item>
+        <item>45,0</item>
+        <item>50,0</item>
+        <item>60,0</item>
+        <item>65,0</item>
+        <item>70,0</item>
+        <item>75,0</item>
+        <item>80,0</item>
+        <item>85,0</item>
+        <item>100,0</item>
+        <item>120,0</item>
+        <item>150,0</item>
+    </string-array>
+
+    <string-array name ="Lista_Resultado">
+        <item>Ambiente</item>
+        <item>Nome Ambiente</item>
+        <item>Largura</item>
+        <item>Comprimento</item>
+        <item>Area</item>
+        <item>Tensao</item>
+        <item>Lumens Ambiente</item>
+        <item>Lumens Luminaria</item>
+        <item>Potencia Luminaria</item>
+        <item>Total Luminaria</item>
+        <item>Lumens Total</item>
+        <item>Potencia Total Ilum</item>
+        <item>Amperagem Circuito Ilum</item>
+        <item>Qtde Tomada</item>
+        <item>Potencia Total Tomada</item>
+        <item>Amperagem Tomada</item>
+        <item>Qtde Pessoas Ambiente</item>
+        <item>Qtde Eletrodomestico</item>
+        <item>Btus por M2</item>
+        <item>Btus Adicional por Pessoa</item>
+        <item>Btus Adicional por Eletronico</item>
+        <item>Btus Adicional por Insidencia Raio Solar</item>
+        <item>Btus Total</item>
+        <item>IDRS</item>
+        <item>Potencia Eletria Ac</item>
+        <item>Amperagem Circuito AC</item>
+
+
+    </string-array>
+
+</resources>
