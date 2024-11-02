@@ -118,7 +118,6 @@ class DataFromUiScreen(
                 BottomAppBar(
                     containerColor = Color.Transparent,
                     actions = {
-
                         if(home){
                             NavigationBarItem(
 
@@ -281,7 +280,6 @@ class DataFromUiScreen(
                                 label = { Text(text = "Adicionar") }
                             )
                         }
-
                         //botao Iluminacao
                         if(iluminacao){
                             NavigationBarItem(
@@ -454,7 +452,8 @@ class DataFromUiScreen(
                                 label = { Text(text = "Calcular") }
                             )
                         }
-                })
+                    }
+                )
             }
 
         ) { paddingStad ->

@@ -74,7 +74,7 @@
         <item>5,0</item>
         <item>6,0</item>
         <item>7,0</item>
-        <item>7,5</item>b
+        <item>7,5</item>
         <item>8,0</item>
         <item>9,0</item>
         <item>10,0</item>
@@ -133,8 +133,47 @@
         <item>IDRS</item>
         <item>Potencia Eletria Ac</item>
         <item>Amperagem Circuito AC</item>
+    </string-array>
 
+    <string-array name="modeloInstalacaoDosCabos">
+        <item>A1-Condutores isolados ou cabos unipolares em eletroduto de seção circular embutido em parede termicamente isolante.</item>
+        <item>B1-Condutores isolados ou cabos unipolares em eletroduto aparente de seção circular.</item>
+        <item>B1-Condutores isolados ou cabos unipolares em eletroduto aparente de seção circular sobre parede.</item>
+        <item>B1-Condutores isolados ou cabos unipolares em eletroduto aparente de seção não-circular sobre parede.</item>
+        <item>B1-Condutores isolados ou cabos unipolares em eletroduto de seção circular embutido em alvenaria.</item>
+        <!--<item>C-Cabos unipolares ou cabo multipolar sobre parede.</item>
+        <item>C-Cabos unipolares ou cabo multipolar fixado diretamente no teto.</item>
+        <item>C-Cabos unipolares ou cabo multipolar em bandeja não perfurada, perfilado ou prateleira.</item>
+        <item>F-Cabos unipolares ou cabo multipolar em bandeja perfurada, horizontal ou vertical.</item>-->
 
     </string-array>
+
+
+    <string-array name="condutoresCarregado">
+      <item>Condutores Carregado</item>
+      <item>Monofaico a dois Condutors: 2</item>
+      <item>Monofaico a três Condutors: 2</item>
+      <item>Duas fases sem neutro: 2</item>
+      <item>Duas fases com neutro: 3</item>
+      <item>Trifásico sem neutro: 3</item>
+      <item>Trifásio com neutro: 3</item>
+      <item>Trifásio com neutro: 4</item>
+    </string-array>
+
+    <string-array name="quantCircuitosNoEletroduto">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9 a 11</item>
+        <item>12 a 15</item>
+        <item>16 a 19</item>
+        <item>>= 20</item>
+    </string-array>
+
 
 </resources>

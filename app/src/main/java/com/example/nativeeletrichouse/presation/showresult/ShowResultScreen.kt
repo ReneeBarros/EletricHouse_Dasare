@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -37,6 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -44,7 +46,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -388,6 +393,7 @@ class ShowResultScreen {
         val viewmodel = koinViewModel<ViewModelAmbiente>()
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
+        var clicable by remember { mutableStateOf(false) }
         val listaAmbienteFromDb by viewmodel.ambientesFromDb.collectAsState()
 
         val createDocumentLauncher = rememberLauncherForActivityResult(
@@ -437,6 +443,33 @@ class ShowResultScreen {
                             horizontalArrangement = Arrangement.SpaceAround
                         ) {
 
+                            NavigationBarItem(
+                                selected = clicable,
+                                onClick = {
+                                    clicable =!clicable
+                                    navController.navigate(
+                                        HomeGraph.Home
+                                    )
+                                },
+                                icon = {
+                                    Icon(modifier = Modifier.size(30.dp),
+                                        painter = painterResource(id = R.drawable.home),
+                                        contentDescription = "Home")
+                                },
+                                label = {
+                                    Text(text = "Home")
+                                },
+                                colors = NavigationBarItemColors(
+                                    selectedIconColor = Color.Black,
+                                    unselectedIconColor = Color.DarkGray,
+                                    unselectedTextColor = Color.Black,
+                                    selectedTextColor = Color.DarkGray,
+                                    disabledTextColor = Color.LightGray,
+                                    disabledIconColor = Color.LightGray,
+                                    selectedIndicatorColor = Color.LightGray
+                                )
+                            )
+
                             if (fromBd) {
                                 NavigationBarItem(
                                     modifier = Modifier.size(30.dp),
@@ -476,14 +509,14 @@ class ShowResultScreen {
                                 selected = false,
                                 onClick = {
                                     stateHolder.setShowAlertDialog(value = true)
-                                    //viewmodel.deletarAmbiente(ambienteCalculado)
+
 
                                 },
                                 icon = {
                                     Icon(
                                         modifier = Modifier.size(30.dp),
                                         painter = painterResource(R.drawable.botaoapagar),
-                                        contentDescription = "Deletar"
+                                        contentDescription = "Deletar Tudo"
                                     )
                                 },
                                 label = {
@@ -782,7 +815,7 @@ class ShowResultScreen {
                                     FancyToast
                                         .makeText(
                                             context,
-                                            ambienteFromDbRoom.nomeAmbiente,
+                                            "Ambiente: " +ambienteFromDbRoom.nomeAmbiente +", Deletado!",
                                             FancyToast.LENGTH_SHORT,
                                             FancyToast.SUCCESS,
                                             false
@@ -790,10 +823,6 @@ class ShowResultScreen {
                                         .show()
                                 }
 
-                                FancyToast.makeText(
-                                    context, "Deletado", FancyToast.LENGTH_SHORT,
-                                    FancyToast.SUCCESS, true
-                                ).show()
                                 stateHolder.setShowAlertDialog(value = false)
                             },
                             dialogTitle = "Eletric House",
@@ -803,7 +832,7 @@ class ShowResultScreen {
                     }
 
                     IconButton(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.width(110.dp),
                         onClick = {
                             stateHolder.setShowAlertDialog(value = true)
                         }
@@ -814,7 +843,8 @@ class ShowResultScreen {
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Icon(Icons.Default.Delete, contentDescription = "Deletar", tint = Color.Red)
-                            Text(text = "Deletar Ambiente",
+
+                            Text(text = "Deletar",
                                 color = Color.Gray,
                                 fontSize = 16.sp,
                                 fontFamily = FontFamily.Monospace,
@@ -824,6 +854,7 @@ class ShowResultScreen {
                     }
                 }
 
+                //preencher a tela com os dados
                 Column(
                     modifier = Modifier
                         .fillMaxSize()

@@ -2,6 +2,7 @@ package com.example.nativeeletrichouse.di
 
 import androidx.room.Room
 import com.example.nativeeletrichouse.data.db.EletricHouseDataBase
+import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
 import com.example.nativeeletrichouse.repository.AmbienteRepository
 import com.example.nativeeletrichouse.viewmodel.ViewModelAmbiente
 import org.koin.android.ext.koin.androidContext
@@ -26,4 +27,5 @@ val storeModule = module {
     }
     factory<AmbienteRepository> { (AmbienteRepository(get())) }
     viewModel { ViewModelAmbiente(get())}
+
 }
