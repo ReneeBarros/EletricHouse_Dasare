@@ -136,11 +136,11 @@
     </string-array>
 
     <string-array name="modeloInstalacaoDosCabos">
-        <item>A1-Condutores isolados ou cabos unipolares em eletroduto de seção circular embutido em parede termicamente isolante.</item>
-        <item>B1-Condutores isolados ou cabos unipolares em eletroduto aparente de seção circular.</item>
-        <item>B1-Condutores isolados ou cabos unipolares em eletroduto aparente de seção circular sobre parede.</item>
-        <item>B1-Condutores isolados ou cabos unipolares em eletroduto aparente de seção não-circular sobre parede.</item>
-        <item>B1-Condutores isolados ou cabos unipolares em eletroduto de seção circular embutido em alvenaria.</item>
+        <item>Metodo de Instalaçâo</item>
+        <item>A1-Eletroduto embutido em parede isolante.</item>
+        <item>B1-Eletroduto aparente.</item>
+        <item>B1-Eletroduto aparente de seção não-circular sobre parede.</item>
+        <item>B1-Eletroduto embutido em alvenaria.</item>
         <!--<item>C-Cabos unipolares ou cabo multipolar sobre parede.</item>
         <item>C-Cabos unipolares ou cabo multipolar fixado diretamente no teto.</item>
         <item>C-Cabos unipolares ou cabo multipolar em bandeja não perfurada, perfilado ou prateleira.</item>
@@ -161,6 +161,8 @@
     </string-array>
 
     <string-array name="quantCircuitosNoEletroduto">
+
+        <item>Quant. Circuito</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -173,6 +175,37 @@
         <item>12 a 15</item>
         <item>16 a 19</item>
         <item>>= 20</item>
+    </string-array>
+
+    <string-array name="fator_potencia">
+        <item>Fator de Potencia</item>
+        <item>1.0</item>
+        <item>0.95</item>
+        <item>0.90</item>
+        <item>0.85</item>
+        <item>0.80</item>
+        <item>0.75</item>
+        <item>0.70</item>
+        <item>0.60</item>
+        <item>0.50</item>
+        <item>0.40</item>
+        <item>0.20</item>
+        <item>0.10</item>
+        <item>0.05</item>
+    </string-array>
+
+    <string-array name="Temperatura_Amb">
+        <item>Temp.Ambiente</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
     </string-array>
 
 

@@ -12,7 +12,7 @@ class CalculadorDeCabo{
         fatoPotenciaEnt: Double,
         modeloInstalacaoCabos:String,
         condutoresCarregado:String,
-        quantDeCircuito:String):Double{
+        quantDeCircuito:String):ShowCaboCalculate{
 
         val corrente = calculoCabo.correnteEltrica(
             tensao = tensaoEnt,
@@ -25,10 +25,22 @@ class CalculadorDeCabo{
         val quantCircuito = calculoCabo.quantCircuitosNoEletroduto(quantDeCircuito)
         var caboEncontrado = calculoCabo.encontrarCaboCalculado(
             tabelaIndice = modeloInstalacao,
-            correnteCorrigida = (corrente * quantCircuito!!),
+            correnteCorrigida = (corrente / quantCircuito!!),
             qtdeCondutorCarregado =condutorCarregado )
+        val correnteDoCabo = calculoCabo.correnteDoCaboSuportado(quantCircuito)
 
-        return caboEncontrado
+        return ShowCaboCalculate(
+            tensao = tensaoEnt,
+            pontecia = potenciaEnt,
+            corrente = corrente,
+            fatoPotencia = fatoPotenciaEnt,
+            modeloInstalacaoCabos = modeloInstalacao,
+            condutoresCarregado = condutorCarregado,
+            quantDeCircuito = quantCircuito.toInt(),
+            caboCalculado = caboEncontrado,
+            correnteSuportadoPeloCabo = correnteDoCabo
+
+        )
 
     }
 

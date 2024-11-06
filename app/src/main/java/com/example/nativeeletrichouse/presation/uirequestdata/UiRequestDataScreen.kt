@@ -43,30 +43,14 @@ fun Requestdatascreen(
 
 ) {
     Column(modifier = modifier) {
-//Spinner Potencia Lampada
-/*        SpinnerentradaDados(
-            listaItens = listItem,
-            itemSelecionado = itemSelecionado,
-            selecionandoItens = { selecionandoItens(it) }
-        )*/
-/*        SpinnerTextDados(
-            listaItens = listItem,
-            itemSelecionado = itemSelecionado,
-            selecionandoItens = { selecionandoItens(it) },
-            label = label
-        )*/
 
-/*        Spinner(
-            listaItens = listItem,
-            itemSelecionado = itemSelecionado,
-            selecionandoItens = { selecionandoItens(it) },
-            label = label)*/
 
         spinnerTextValue(
             listaItens = listItem,
             itemSelecionado = itemSelecionado,
             selecionandoItens = { selecionandoItens(it) },
-            label = label
+            label = label,
+            modifier = modifier
         )
     }
 }

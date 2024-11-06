@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -37,7 +38,10 @@ fun CardItem(
     description:String,
     clickAciton:() ->Unit,
     isSelected:Boolean,
-    title:String
+    title:String,
+    modifier: Modifier = Modifier,
+    textCentral:Boolean = false,
+    textCentralConteudo:String=""
 
 ){
 
@@ -46,7 +50,7 @@ fun CardItem(
     Card(
         onClick = { clickAciton() },
         elevation = CardDefaults.cardElevation(10.dp),
-        modifier = Modifier
+        modifier = modifier
             .size(180.dp, 250.dp)
             .background(color = Color.White),
         shape = RoundedCornerShape(15.dp),
@@ -63,14 +67,14 @@ fun CardItem(
         ) {
 
             Column(
-                Modifier
+                modifier = modifier
                     .size(180.dp, 300.dp)
                     .background(color = Color.White),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Card(
-                    modifier = Modifier.size(180.dp, 180.dp),
+                    modifier = modifier.size(180.dp, 180.dp),
                     shape = RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White,
@@ -78,7 +82,7 @@ fun CardItem(
                     )
                 ) {
                     Image(
-                        modifier = Modifier.size(180.dp, 180.dp),
+                        modifier = modifier.size(180.dp, 180.dp),
                         painter = painterResource(id = img),
                         contentDescription = description,
                         contentScale = ContentScale.Crop,
@@ -95,28 +99,32 @@ fun CardItem(
 
             }
 
+            if(textCentral){
+                Column(
+                    modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    Card(
+                        modifier = Modifier.size(width = 185.dp, height = 30.dp).align(alignment = Alignment.CenterHorizontally),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.hsl(1f,0.5f,1f,0.8f)
+                        ),
+
+                        ) {
+                        Text(text = textCentralConteudo, textAlign = TextAlign.Center,
+                            fontStyle = FontStyle.Normal, fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.align(alignment = Alignment.CenterHorizontally).padding(top = 3.dp)
+                        )
+                    }
+
+                }
+
+            }
 
 
-
-/*            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .background(color = Color.Transparent)
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.End
-            ) {
-                RadioButton(
-                    selected = isSelected,
-                    onClick = { clickAciton() },
-                    modifier = Modifier.size(20.dp,20.dp),
-                    colors = RadioButtonDefaults.colors(
-                        disabledUnselectedColor = Color.Gray,
-                        selectedColor = Color.Green,
-                        unselectedColor = Color.Gray
-                    )
-                )
-            }*/
         }
     }
 }

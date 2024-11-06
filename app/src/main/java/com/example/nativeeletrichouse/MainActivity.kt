@@ -18,14 +18,18 @@ import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
+import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
 import com.example.nativeeletrichouse.dto.DtoResponseEletricHouse
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
+import com.example.nativeeletrichouse.presation.calcularcabo.CalcularCaboScreen
 import com.example.nativeeletrichouse.presation.getData.DataFromUiScreen
 import com.example.nativeeletrichouse.presation.mainui.MainScreen
 import com.example.nativeeletrichouse.presation.showresult.ShowResultScreen
+import com.example.nativeeletrichouse.presation.solar.SystemSolarScreen
 import com.example.nativeeletrichouse.ui.theme.NativeEletrichouseTheme
 import com.example.nativeeletrichouse.viewmodel.ViewModelAmbiente
 import kotlinx.serialization.json.Json
+import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -43,6 +47,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         val navController = rememberNavController()
                         val viewModelAmbiente = koinViewModel<ViewModelAmbiente>()
+                        val caboEletricoInterFace: CalculoCaboEletricoInterFace by inject()
 
                         NavHost(
                             navController = navController,
@@ -53,6 +58,15 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                     viewModelAmbiente = viewModelAmbiente
                                 )
+                            }
+
+                            composable<HomeGraph.placaSolar> {
+                                SystemSolarScreen().SystemSolarUiScreen(
+                                    navController = navController
+                                )
+                            }
+                            composable<HomeGraph.calcularCabo> {
+                                CalcularCaboScreen(caboEletricoInterFace).CalcularCaboUiScreen()
                             }
 
 

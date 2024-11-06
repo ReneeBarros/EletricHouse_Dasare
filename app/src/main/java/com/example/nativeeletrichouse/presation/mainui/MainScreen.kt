@@ -341,7 +341,9 @@ class MainScreen {
                                        img = R.drawable.cabeletrico,
                                        description ="Cabo Eletrico",
                                        {
-                                           stateHolderHome.setCalculo(uiStateHome.calculo)
+                                           navController.navigate(
+                                               HomeGraph.calcularCabo
+                                           )
                                        },
                                        uiStateHome.calculo,
                                        title = "Cabo Eletrico"
@@ -371,12 +373,8 @@ class MainScreen {
                                    CardItem(img = R.drawable.placasolar, description ="placa solar",
                                        {
                                            navController.navigate(
-                                               HomeGraph.dataUi(
-                                               ilum = false,
-                                               tom = false,
-                                               ac = false,
-                                               home = true
-                                           ))
+                                               HomeGraph.placaSolar
+                                           )
                                        },
                                        uiStateHome.arCondicionado,
                                        title = "Calcular placa Solar"

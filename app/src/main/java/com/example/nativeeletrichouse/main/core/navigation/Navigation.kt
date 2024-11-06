@@ -22,6 +22,12 @@ sealed class HomeGraph{
     object mainUi
 
     @Serializable
+    object placaSolar
+
+    @Serializable
+    object calcularCabo
+
+    @Serializable
     data class dataUi(
         val ilum:Boolean?=null,
         val tom:Boolean?=null,
