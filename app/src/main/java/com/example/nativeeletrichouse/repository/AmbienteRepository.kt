@@ -3,7 +3,7 @@ package com.example.nativeeletrichouse.repository
 import com.example.nativeeletrichouse.data.db.dao.AmbienteDao
 import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
-import kotlinx.coroutines.Dispatchers.IO
+import com.example.nativeeletrichouse.maper.MapperResponseApiToResponseUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
@@ -12,9 +12,8 @@ class AmbienteRepository(
     private val dao: AmbienteDao
 ) {
     val ambientes: Flow<List<AmbienteEntity>> = dao.findAll()
-    /*val ambientes get() = dao.findAll()*/
 
-    suspend fun saveAmbeinte(ambiente: ResponseCaculateAmbiente){
+    suspend fun saveAmbeinte(ambiente: MapperResponseApiToResponseUi){
         dao.save(ambiente.toAmbienteEntity())
     }
 
@@ -23,7 +22,7 @@ class AmbienteRepository(
     }
 }
 
-fun ResponseCaculateAmbiente.toAmbienteEntity()=  AmbienteEntity(
+fun MapperResponseApiToResponseUi.toAmbienteEntity()=  AmbienteEntity(
     id = 0,
     ambiente = this.ambiente,
     nomeAmbiente = this.nomeAmbiente,
@@ -50,10 +49,14 @@ fun ResponseCaculateAmbiente.toAmbienteEntity()=  AmbienteEntity(
     btusTotal = this.btusTotal,
     IDRS = this.IDRS,
     potenciaEletriaAc = this.potenciaEletriaAc,
-    amperagemCircuitoAc = this.amperagemCircuitoAc
+    amperagemCircuitoAc = this.amperagemCircuitoAc,
+    caboArCond = this.caboArCond,
+    caboTomada = this.caboTomada,
+    caboIluminacao = this.caboIluminacao
 
 )
 
+/*
 fun AmbienteEntity.toResponseCaculateAmbiente() = ResponseCaculateAmbiente(
 
     ambiente = this.ambiente,
@@ -81,5 +84,5 @@ fun AmbienteEntity.toResponseCaculateAmbiente() = ResponseCaculateAmbiente(
     btusTotal = this.btusTotal,
     IDRS = this.IDRS,
     potenciaEletriaAc = this.potenciaEletriaAc,
-    amperagemCircuitoAc = this.amperagemCircuitoAc
-)
+    amperagemCircuitoAc = this.amperagemCircuitoAc,
+)*/

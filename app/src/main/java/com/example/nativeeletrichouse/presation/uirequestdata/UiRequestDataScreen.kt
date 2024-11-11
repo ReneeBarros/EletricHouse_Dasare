@@ -104,6 +104,7 @@ fun UiRequestDataScreen(
     listAmbiente: Array<String>,
     listPotenciaLamp: Array<String>,
     listQuantidade: Array<String>,
+    listQuantidadeEletronic: Array<String>,
     listTensao: Array<String>,
     onValueChangeNomeAmbiente:(String) ->Unit,
     onValueChangeLargura:(String) ->Unit,
@@ -223,9 +224,9 @@ fun UiRequestDataScreen(
             )
             //QTDE eletronicos no ambiente
             Requestdatascreen(
-                listItem = listQuantidade,
+                listItem = listQuantidadeEletronic,
                 itemSelecionado = itemselecQtdeEletr,
-                label = "Qtde Pess.AMbiente" ,
+                label = "Qtde Pess.Ambiente" ,
                 {qtdeEletronicoAmb(it)},
                 modifier = Modifier
                     .weight(1f)
@@ -287,6 +288,104 @@ fun UiRequestDataScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun UiRequestDataScreenWc(
+    listAmbiente: Array<String>,
+    listPotenciaLamp: Array<String>,
+    listTensao: Array<String>,
+    onValueChangeNomeAmbiente:(String) ->Unit,
+    onValueChangeLargura:(String) ->Unit,
+    onValueChangeComp:(String) ->Unit,
+    selecionandoAmbiente:(String) -> Unit,
+    selecionandoLampada:(String) -> Unit,
+    selecionandoTensao:(String) -> Unit,
+    valueNomeAmbiente:String,
+    valueLargura:String,
+    valuecomp:String,
+    itemselecAmbiente:String,
+    itemselecLamp:String,
+    itemselecTensao:String,
+
+    ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(15.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        //listAmbiente
+        Requestdatascreen(
+            listItem = listAmbiente,
+            itemSelecionado = itemselecAmbiente,
+            selecionandoItens = { selecionandoAmbiente(it) },
+            label = "Escolher Ambiente"
+            //modifier = Modifier.height(60.dp)
+        )
+        InputText(
+            label = "Nome do Ambiente",
+            onvalueChange = onValueChangeNomeAmbiente,
+            value = valueNomeAmbiente
+
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+
+        ) {
+            InputText(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 5.dp),
+                label = "Largura",
+                onvalueChange = onValueChangeLargura,
+                keyboardType = KeyboardType.Number,
+                value = valueLargura
+
+            )
+            InputText(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 5.dp),
+                label = "Comprimento",
+                onvalueChange = onValueChangeComp,
+                keyboardType = KeyboardType.Number,
+                value = valuecomp
+            )
+        }
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            //lista Potencia lampada
+            Requestdatascreen(
+                listItem = listPotenciaLamp,
+                itemSelecionado =itemselecLamp ,
+                selecionandoItens ={selecionandoLampada(it)} ,
+                label = "(W)-Lampada",
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 5.dp)
+                //.height(60.dp)
+            )
+            //lista tensão 220 ou 110
+            Requestdatascreen(
+                listItem = listTensao,
+                itemSelecionado =itemselecTensao ,
+                selecionandoItens ={selecionandoTensao(it)} ,
+                label = "110 ou 220",
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 5.dp)
+                // .height(60.dp)
+            )
         }
     }
 }

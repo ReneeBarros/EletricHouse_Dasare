@@ -21,6 +21,7 @@ import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
 import com.example.nativeeletrichouse.dto.DtoResponseEletricHouse
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
+import com.example.nativeeletrichouse.maper.MapperResponseApiToResponseUi
 import com.example.nativeeletrichouse.presation.calcularcabo.CalcularCaboScreen
 import com.example.nativeeletrichouse.presation.getData.DataFromUiScreen
 import com.example.nativeeletrichouse.presation.mainui.MainScreen
@@ -66,7 +67,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable<HomeGraph.calcularCabo> {
-                                CalcularCaboScreen(caboEletricoInterFace).CalcularCaboUiScreen()
+                                CalcularCaboScreen(caboEletricoInterFace, navController).CalcularCaboUiScreen()
                             }
 
 
@@ -115,7 +116,8 @@ class MainActivity : ComponentActivity() {
                                         IDRS = bring.IDRS,
                                         amperagemCircuitoAc = bring.amperagemCircuitoAc
                                     ),
-                                   calcular = bring.calcular
+                                   calcular = bring.calcular,
+                                   navController = navController
                                )
                             }
 
@@ -143,8 +145,9 @@ class MainActivity : ComponentActivity() {
                                         fromBd = fromDb,
                                         navController = navController
                                     )
-                                }else{
-                                    val listAmbiente = Json.decodeFromString<List<ResponseCaculateAmbiente>>(jsonData)
+                                }
+                                else{
+                                    val listAmbiente = Json.decodeFromString<List<MapperResponseApiToResponseUi>>(jsonData)
                                     ShowResultScreen().ApresentationResultApi(
                                         ambienteFromDbRoom = listOf(),
                                         ambienteCalculado = listAmbiente,

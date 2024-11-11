@@ -3,6 +3,7 @@ package com.example.nativeeletrichouse.pdfgeneration
 import android.annotation.SuppressLint
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.data.reponse.ResponseCalulatePdf
+import com.example.nativeeletrichouse.maper.MapperResponseApiToResponseUi
 import com.itextpdf.kernel.colors.Color
 import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.geom.PageSize
@@ -28,7 +29,7 @@ class PdfCreater(
     @SuppressLint("SuspiciousIndentation")
     fun createPdf(
         outputStream: OutputStream,
-        response:List<ResponseCaculateAmbiente>
+        response:List<MapperResponseApiToResponseUi>
     ){
         // Criar o escritor de PDF
         val pdfWriter = PdfWriter(outputStream)

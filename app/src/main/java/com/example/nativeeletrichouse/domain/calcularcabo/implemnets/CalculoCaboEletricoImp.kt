@@ -55,10 +55,17 @@ class CalculoCaboEletricoImp(): CalculoCaboEletricoInterFace  {
                 correnteCorrigida in  34.1..46.0 -> 46.0
                 correnteCorrigida in 46.1..61.0 -> 61.0
                 correnteCorrigida in 61.1..80.0 -> 80.0
+                correnteCorrigida in 80.1..99.0 -> 99.0
+                correnteCorrigida in 99.1..119.0 -> 119.0
+                correnteCorrigida in 119.1..151.0 -> 151.0
                 else -> {correnteCorrigida}
             }
 
-            val A1_2 = mapOf(14.5 to 1.5, 19.5 to 2.5, 26.0 to 4.0, 34.0 to 6.0, 46.0 to 10.0, 61.0 to 16.0, 80.0 to 25.0)
+            val A1_2 = mapOf(
+                14.5 to 1.5, 19.5 to 2.5, 26.0 to 4.0, 34.0 to 6.0,
+                46.0 to 10.0, 61.0 to 16.0, 80.0 to 25.0, 99.0 to 35.0,
+                119.0 to 50.0, 151.0 to 70.0
+            )
             getCabo = A1_2[calculatedCurrent]?:0.1
             correnteDoCabo = calculatedCurrent
 
@@ -74,9 +81,16 @@ class CalculoCaboEletricoImp(): CalculoCaboEletricoInterFace  {
                 correnteCorrigida in 31.1..42.0 -> 42.0
                 correnteCorrigida in 42.1..56.0 -> 56.0
                 correnteCorrigida in 56.1..73.0 -> 73.0
+                correnteCorrigida in 73.1..89.0 -> 89.0
+                correnteCorrigida in 89.1..108.0 -> 108.0
+                correnteCorrigida in 108.1..136.0 -> 136.0
                 else -> {correnteCorrigida}
             }
-            val A1_3 = mapOf(13.5 to 1.5, 18.0 to 2.5, 24.0 to 4.0, 31.0 to 6.0, 42.0 to 10.0, 56.0 to 16.0, 73.0 to 25.0)
+            val A1_3 = mapOf(
+                13.5 to 1.5, 18.0 to 2.5, 24.0 to 4.0, 31.0 to 6.0,
+                42.0 to 10.0, 56.0 to 16.0, 73.0 to 25.0, 89.0 to 35.0,
+                108.0 to 50.0, 136.0 to 70.0
+            )
             getCabo = A1_3[calculatedCurrent]?:0.2
 
             correnteDoCabo = calculatedCurrent
@@ -92,9 +106,16 @@ class CalculoCaboEletricoImp(): CalculoCaboEletricoInterFace  {
                 correnteCorrigida in 41.1..57.0 -> 57.0
                 correnteCorrigida in 57.1..76.0 -> 76.0
                 correnteCorrigida in 76.1..101.0 -> 101.0
+                correnteCorrigida in 101.1..125.0 -> 125.0
+                correnteCorrigida in 125.1..151.0 -> 151.0
+                correnteCorrigida in 151.1..192.0 -> 192.0
                 else -> {correnteCorrigida}
             }
-            val B1_2 = mapOf(17.5 to 1.5, 24.0 to 2.5, 32.0 to 4.0, 41.0 to 6.0, 57.0 to 10.0, 76.0 to 16.0, 101.0 to 25.0)
+            val B1_2 = mapOf(
+                17.5 to 1.5, 24.0 to 2.5, 32.0 to 4.0, 41.0 to 6.0,
+                57.0 to 10.0, 76.0 to 16.0, 101.0 to 25.0, 125.0 to 35.0,
+                151.0 to 50.0, 192.0 to 70.0
+            )
             getCabo = B1_2[calculatedCurrent]?:0.31
             correnteDoCabo = calculatedCurrent
 
@@ -111,9 +132,15 @@ class CalculoCaboEletricoImp(): CalculoCaboEletricoInterFace  {
                 correnteCorrigida in 36.1..50.0 -> 50.0
                 correnteCorrigida in 50.1..68.0 -> 68.0
                 correnteCorrigida in 68.1..89.0 -> 89.0
+                correnteCorrigida in 89.1..110.0 -> 110.0
+                correnteCorrigida in 110.1..134.0 -> 134.0
+                correnteCorrigida in 134.1..171.0 -> 171.0
                 else -> {correnteCorrigida}
             }
-            val B1_3 = mapOf(15.5 to 1.5, 21.0 to 2.5, 28.0 to 4.0, 36.0 to 6.0, 50.0 to 10.0, 68.0 to 16.0, 89.0 to 25.0)
+            val B1_3 = mapOf(15.5 to 1.5, 21.0 to 2.5, 28.0 to 4.0, 36.0 to 6.0,
+                50.0 to 10.0, 68.0 to 16.0, 89.0 to 25.0, 110.0 to 35.0, 134.0 to 50.0,
+                171.0 to 70.0
+            )
             getCabo = B1_3[calculatedCurrent]?:0.4
             correnteDoCabo = calculatedCurrent
 

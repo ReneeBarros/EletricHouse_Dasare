@@ -1,7 +1,6 @@
 package com.example.nativeeletrichouse.presation.calcularcabo
 
-import android.widget.Toast
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,23 +12,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,26 +38,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.nativeeletrichouse.R
-import com.example.nativeeletrichouse.data.request.RequestCalculateAmbiente
 import com.example.nativeeletrichouse.domain.calcularcabo.CalculadorDeCabo
 import com.example.nativeeletrichouse.domain.calcularcabo.ShowCaboCalculate
 import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
-import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
 import com.example.nativeeletrichouse.presation.components.input.InputText
+import com.example.nativeeletrichouse.presation.components.widget.TopBar
 import com.example.nativeeletrichouse.presation.theme.Dimension
 import com.example.nativeeletrichouse.presation.uirequestdata.Requestdatascreen
-import com.example.nativeeletrichouse.presation.uirequestdata.UiRequestDataScreen
 import com.shashank.sony.fancytoastlib.FancyToast
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import org.koin.compose.koinInject
-import org.koin.java.KoinJavaComponent.inject
 
 @OptIn(ExperimentalMaterial3Api::class)
 class CalcularCaboScreen(
 
-    private val caboCalculator:CalculoCaboEletricoInterFace
+    private val caboCalculator:CalculoCaboEletricoInterFace,
+    private val navController: NavController
 ) {
 
     private val stateHolder = CalcularCaboStateHolder()
@@ -78,136 +68,79 @@ class CalcularCaboScreen(
         //var listCabo:MutableList<ShowCaboCalculate> = mutableListOf()
         var listChecked by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
-
+        val items = remember { mutableStateListOf<ShowCaboCalculate>() }
 
 
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text(text=" Calcular Cabo Eletrico") })
+
+                TopBar(" Calcular Cabo Eletrico", Modifier, navController = navController,20.sp)
+               // TopAppBar(title = { Text(text=" Calcular Cabo Eletrico") })
             },
 
-            bottomBar = {
-                BottomAppBar(
-                    tonalElevation =  0.dp,
-                    containerColor = Color.Transparent,
-                    contentColor = Color.Black,
-                    actions = {
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
 
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(color = Color.White),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-
-                            NavigationBarItem(
-                                selected = true,
-                                onClick = {},
-                                icon = {
-                                    Icon(modifier = Modifier.size(30.dp),
-                                        painter = painterResource(id = R.drawable.home),
-                                        contentDescription = "Home")
-                                },
-                                label = {
-                                    Text(text = "Home")
-                                },
-                                colors = NavigationBarItemColors(
-                                    selectedIconColor = Color.Black,
-                                    unselectedIconColor = Color.DarkGray,
-                                    unselectedTextColor = Color.Black,
-                                    selectedTextColor = Color.DarkGray,
-                                    disabledTextColor = Color.LightGray,
-                                    disabledIconColor = Color.LightGray,
-                                    selectedIndicatorColor = Color.LightGray
-                                )
-                            )
-
-                            FloatingActionButton(
-                                onClick = {
-                                    val calCabo = CalculadorDeCabo().calculadarCabos(
-                                        correnteEnt = uiState.corrente.replace(",", ".").toDouble(),
-                                        tensaoEnt = uiState.tensao,
-                                        potenciaEnt = uiState.pontecia.replace(",", ".").toDouble(),
-                                        fatoPotenciaEnt = uiState.fatoPotencia,
-                                        modeloInstalacaoCabos = uiState.modeloInstalacaoCabos,
-                                        condutoresCarregado = uiState.condutoresCarregado,
-                                        quantDeCircuito = uiState.quantDeCircuito,
-                                        calculoCabo = caboCalculator
-                                    )
-                                    uiState.listCabo.add(calCabo)
-                                    FancyToast.makeText(context,"Cabo Calculado",FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show()
-                                    listChecked = !listChecked
-                                },
-                                modifier = Modifier
-                                    .size(65.dp, 70.dp)
-                                    .padding(5.dp),
-                                containerColor = Color.LightGray
-                            ) {
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-
-                                    Icon(painter = painterResource(id = R.drawable.calculadora_icon), contentDescription ="", modifier = Modifier.size(25.dp))
-                                    Text(text = "Calcular")
-                                }
-
-                            }
-
-                            // botão adiciona
-                            NavigationBarItem(
-                                modifier = Modifier.background(Color.Transparent),
-                                colors = NavigationBarItemColors(
-                                    selectedTextColor = Color.Blue,
-                                    selectedIconColor = Color.Blue,
-                                    selectedIndicatorColor = Color.LightGray,
-                                    unselectedIconColor = Color.Gray,
-                                    unselectedTextColor = Color.Gray,
-                                    disabledIconColor = MaterialTheme.colorScheme.primary,
-                                    disabledTextColor = MaterialTheme.colorScheme.primary
-                                ),
-                                selected = false,
-                                onClick = {
-                                    if(
-                                        uiState.tensao.toString().isEmpty()||uiState.pontecia.isEmpty()||uiState.modeloInstalacaoCabos=="Metodo de Instalaçâo"
-                                    ){
-                                        Toast.makeText(context, "Necessario Preencher Todos os Campos", Toast.LENGTH_SHORT).show()
-
-                                    }
-                                    else{
-                                        /*val request = RequestCalculateAmbiente(
-                                            uiState.insertAmbiente,
-                                            uiState.insertNameAmb,
-                                            uiState.comprimento.replace(",", ".").toDouble(),
-                                            uiState.insidenciaSolar,
-                                            uiState.largura.replace(",", ".").toDouble(),
-                                            uiState.potenciaLamp,
-                                            uiState.quantEletrodomestico.toInt(),
-                                            uiState.quantPessoaAmbient.toInt(),
-                                            uiState.tensao.toInt()
-                                        )*/
-                                       /* listAmbienteHome.add(request)
-                                        FancyToast.makeText(context, "Adicionado", FancyToast.LENGTH_SHORT,
-                                            FancyToast.SUCCESS,false).show()*/
-
-                                    }
-
-                                },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.pasta_de_arquivo_sbg),
-                                        contentDescription = "Calcular",
-                                        modifier = Modifier.size(30.dp, 30.dp),
-                                        tint = MaterialTheme.colorScheme.primary
-                                    )
-                                },
-                                label = { Text(text = "Adicionar") }
-                            )
+                        val errorMessage = when {
+                            uiState.modeloInstalacaoCabos == "Metodo de Instalaçâo" -> "Precisa Informar Metodo de Instalação"
+                            uiState.modeloInstalacaoCabos == "" -> "Precisa Informar Metodo de Instalação"
+                            uiState.quantDeCircuito == "Quantos Circuito?" -> "Precisa informar quantidade de Circuito Agrupado2"
+                            uiState.quantDeCircuito == "Quant.Circuito Agrupado" -> "Precisa informar quantidade de Circuito Agrupado"
+                            uiState.fatoPotencia == 0.0 -> "Precisa informar fator de potencia"
+                            uiState.condutoresCarregado == "" -> "Precisa informar Condutores Carregado"
+                            uiState.condutoresCarregado == "Condutores Carregado" -> "Precisa informar Condutores Carregado1"
+                            uiState.tensao == 0 && uiState.corrente == "0.0" -> "Precisa Informar a Tensão para Calcular a Corrente do Circuito"
+                            uiState.pontecia == "0.0" && uiState.corrente == "0.0" -> "Precisa Informar a Potencia do Circuito para Calcular a Corrente do Circuito"
+                            else -> null
                         }
+                        if (errorMessage != null) {
+
+                            FancyToast.makeText(context,
+                                errorMessage, FancyToast.LENGTH_SHORT,
+                                FancyToast.WARNING, R.drawable.lampada_acesa,
+                                false
+                            ).show()
+                        }
+                        else {
+
+                            val calCabo = CalculadorDeCabo().calculadarCabos(
+                                correnteEnt = uiState.corrente.replace(",", ".").toDouble(),
+                                tensaoEnt = uiState.tensao,
+                                potenciaEnt = uiState.pontecia.replace(",", ".").toDouble(),
+                                fatoPotenciaEnt = uiState.fatoPotencia,
+                                modeloInstalacaoCabos = uiState.modeloInstalacaoCabos,
+                                condutoresCarregado = uiState.condutoresCarregado,
+                                quantDeCircuito = uiState.quantDeCircuito,
+                                calculoCabo = caboCalculator
+                            )
+
+                            items.add(calCabo)
+                            FancyToast.makeText(context,"Cabo Calculado",
+                                FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show()
+                            listChecked = true
+                        }
+                    },
+                    modifier = Modifier
+                        .size(75.dp, 70.dp),
+                    containerColor = Color.White,
+
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Icon(painter = painterResource(id = R.drawable.calculadora_icon),
+                            contentDescription ="", modifier = Modifier.size(25.dp))
+                        Text(text = "Calcular")
                     }
-                )
-            }
+
+                }
+            },
+
+            floatingActionButtonPosition = FabPosition.Center,
+
 
         ){paddingValues ->
             Column(modifier = Modifier
@@ -228,7 +161,9 @@ class CalcularCaboScreen(
                     Requestdatascreen(
                         listItem = stringArrayResource(R.array.Tensao),
                         itemSelecionado = uiState.tensao.toString(),
-                        selecionandoItens = { stateHolder.setTensao(it.toInt()) },
+                        selecionandoItens = {
+                            stateHolder.setTensao(it.toInt())
+                        },
                         label = "Tensão",
                         modifier = Modifier
                             .weight(1f)
@@ -303,8 +238,8 @@ class CalcularCaboScreen(
 
                     Requestdatascreen(
                         listItem = stringArrayResource(R.array.quantCircuitosNoEletroduto),
-                        itemSelecionado =uiState.quantDeCircuito.toString() ,
-                        selecionandoItens ={stateHolder.setQuantCircuito(it)} ,
+                        itemSelecionado =uiState.quantDeCircuito,
+                        selecionandoItens ={ stateHolder.setQuantCircuito(it) } ,
                         label = "Quant Circuito ?",
                         modifier = Modifier
                             .weight(1f)
@@ -322,11 +257,12 @@ class CalcularCaboScreen(
                             .height(260.dp)
                             , colors = CardDefaults.cardColors(
                                 containerColor = Color.White
-                            )
+                            ),
+                        border = BorderStroke(1.dp, color = Color.LightGray)
                     ) {
                         LazyColumn(Modifier.fillMaxSize()) {
                             items(
-                                items = uiState.listCabo
+                                items = items
                             ) { cabo ->
                                 Spacer(modifier = Modifier.height(Dimension.small))
                                 ShowCabo(
@@ -369,8 +305,8 @@ class CalcularCaboScreen(
             "Metodo de Instalação: ",
             "Condutor Carregado: ",
             "Quantidade De Circuito: ",
-            "Cabo Calculado: ",
-            "Corrente de Cabo: "
+            "Cabo Calculado (mm²): ",
+            "Corrente de Cabo (A): "
 
         )
         val InfoToCabo = listOf(
@@ -411,5 +347,8 @@ class CalcularCaboScreen(
             }
         }
     }
+
+
+
 }
 

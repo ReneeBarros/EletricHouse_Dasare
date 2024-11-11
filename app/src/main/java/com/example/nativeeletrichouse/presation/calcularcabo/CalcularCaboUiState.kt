@@ -5,7 +5,7 @@ import com.example.nativeeletrichouse.domain.calcularcabo.ShowCaboCalculate
 
 data class CalcularCaboUiState(
     val title: String = "CalcularCabo",
-    val pontecia:String="",
+    val pontecia:String="0.0",
     val tensao:Int=0,
     val corrente:String="0.0",
     val fatoPotencia:Double=0.0,

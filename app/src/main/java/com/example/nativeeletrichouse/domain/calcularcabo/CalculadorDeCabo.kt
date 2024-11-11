@@ -36,17 +36,10 @@ class CalculadorDeCabo{
             fatoPotencia = fatoPotenciaEnt,
             modeloInstalacaoCabos = modeloInstalacao,
             condutoresCarregado = condutorCarregado,
-            quantDeCircuito = quantCircuito.toInt(),
+            quantDeCircuito = quantDeCircuito.lastOrNull()!!.digitToInt(),
             caboCalculado = caboEncontrado,
             correnteSuportadoPeloCabo = correnteDoCabo
 
         )
-
     }
-
-
-
-
-
-
 }

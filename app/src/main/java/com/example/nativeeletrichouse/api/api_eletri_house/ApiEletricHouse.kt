@@ -1,10 +1,13 @@
 package com.example.nativeeletrichouse.api.api_eletri_house
 
+import android.annotation.SuppressLint
+import androidx.compose.ui.platform.LocalContext
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoArCond
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoIluminacao
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoTomada
 import com.example.nativeeletrichouse.data.request.RequestCalculateAmbiente
+import com.example.nativeeletrichouse.error.handleUnresolvedAddressException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -16,6 +19,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import java.io.IOException
+import java.nio.channels.UnresolvedAddressException
 
 class ApiEletricHouse {
 
@@ -24,6 +29,7 @@ class ApiEletricHouse {
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
+                allowSpecialFloatingPointValues = true
             })
         }
         install(HttpCache)
@@ -34,6 +40,8 @@ class ApiEletricHouse {
 
     private val BASE_URL = "http://dasare-eletrichouse-dev.sa-east-1.elasticbeanstalk.com/"
 
+
+    val context = LocalContext
 
     suspend fun apiIluminacao(
         requestIluminacao: Any
@@ -86,6 +94,7 @@ class ApiEletricHouse {
     suspend fun apiCalcularListaDeAmbiente(
         requestCalAmbiente: List<RequestCalculateAmbiente>
     ):List<ResponseCaculateAmbiente>{
+
         val urlCalListAmbiente = "api/v1/eletrichouse/calcularListaAmbiente"
 
         //val urlCalAmbinete = "http://192.168.18.10:8080/api/v1/eletrichouse/calcularListaAmbiente"

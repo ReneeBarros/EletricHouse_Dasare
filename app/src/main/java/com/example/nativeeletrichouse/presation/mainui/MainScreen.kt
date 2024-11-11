@@ -280,7 +280,8 @@ class MainScreen {
                                    CardItem(img = R.drawable.luminaria, description ="lampada",
                                        {
                                            stateHolderHome.setIluminacao(uiStateHome.iluminacao)
-                                           navController.navigate(HomeGraph.dataUi(
+                                           navController.navigate(
+                                               HomeGraph.dataUi(
                                                ilum = true,
                                                tom = uiStateHome.tomada,
                                                ac = uiStateHome.arCondicionado,

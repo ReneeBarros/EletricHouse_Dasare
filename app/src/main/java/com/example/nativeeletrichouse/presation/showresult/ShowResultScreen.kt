@@ -66,7 +66,9 @@ import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.dto.DtoResponseEletricHouse
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
+import com.example.nativeeletrichouse.maper.MapperResponseApiToResponseUi
 import com.example.nativeeletrichouse.pdfgeneration.PdfCreater
+import com.example.nativeeletrichouse.presation.components.widget.TopBar
 import com.example.nativeeletrichouse.presation.theme.Dimension
 import com.example.nativeeletrichouse.presation.uirequestdata.AlertDialogConf
 import com.example.nativeeletrichouse.viewmodel.ViewModelAmbiente
@@ -85,8 +87,11 @@ class ShowResultScreen {
     @Composable
     fun ShowResultApp(
         eletricHouseComplete: DtoResponseEletricHouse.EletricHouseComplete,
-        calcular: String
+        calcular: String,
+        navController: NavController
+
     ) {
+
         val itemresult = listOf(
             "${eletricHouseComplete.id}",
             eletricHouseComplete.ambiente,
@@ -149,48 +154,12 @@ class ShowResultScreen {
 
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text(text = uiState.title) }
+                TopBar(
+                    title = "Resultado",
+                    fontSize = 16.sp,
+                    modifier = Modifier,
+                    navController = navController
                 )
-            },
-            bottomBar = {
-                BottomAppBar(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor = MaterialTheme.colorScheme.onBackground,
-                ) {
-
-                    Row(
-                        Modifier.fillMaxSize(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(Icons.Default.CheckCircle, contentDescription = "Salvar")
-                            Text(text = "Salvar", fontSize = 16.sp)
-                        }
-
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(Icons.Default.Delete, contentDescription = "Deletar")
-                            Text(text = "Deletar", fontSize = 16.sp)
-
-                        }
-
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(Icons.Default.Create, contentDescription = "Gerar PDF")
-                            Text(text = "Gerar PDF", fontSize = 16.sp)
-                        }
-
-                    }
-                }
             }
 
         ) { paddingValues ->
@@ -385,7 +354,7 @@ class ShowResultScreen {
     @Composable
     fun ApresentationResultApi(
         ambienteFromDbRoom:List<AmbienteEntity>,
-        ambienteCalculado: List<ResponseCaculateAmbiente>,
+        ambienteCalculado: List<MapperResponseApiToResponseUi>,
         fromBd: Boolean,
         navController: NavController
     ) {
@@ -475,7 +444,6 @@ class ShowResultScreen {
                                     modifier = Modifier.size(30.dp),
                                     selected = false,
                                     onClick = {
-                                        /*scope.launch {}*/
                                         try{
                                             viewmodel.addAmbiente(ambienteCalculado)
                                             FancyToast.makeText(
@@ -485,11 +453,6 @@ class ShowResultScreen {
                                         }catch (e:Exception){
                                             e.message
                                         }
-
-                                           /* navController.navigate(
-                                                HomeGraph.Home
-                                            )*/
-
                                     },
                                     icon = {
                                         Icon(
@@ -508,9 +471,9 @@ class ShowResultScreen {
                                 modifier = Modifier.size(30.dp),
                                 selected = false,
                                 onClick = {
+
                                     stateHolder.setShowAlertDialog(value = true)
-
-
+                                    //navController.navigate(HomeGraph.Home)
                                 },
                                 icon = {
                                     Icon(
@@ -581,7 +544,8 @@ class ShowResultScreen {
                             ) { stateHolder.setShowAlertDialog(value = true) }
                         }
                     }
-                }else{
+                }
+                else{
                     LazyColumn() {
                         items(
                             items = ambienteCalculado
@@ -600,7 +564,7 @@ class ShowResultScreen {
 
     @Composable
     private fun TabeladeDadosAmbiente(
-        ambienteCalculado: ResponseCaculateAmbiente,
+        ambienteCalculado: MapperResponseApiToResponseUi,
         context: Context,
     ) {
         val scope = rememberCoroutineScope()
@@ -623,9 +587,11 @@ class ShowResultScreen {
                 "${ambienteCalculado.totalLuminaria}",
                 "${ambienteCalculado.potenciaTotalIlum}",
                 "${ambienteCalculado.amperagemCircuitoIlum}",
+                "${ambienteCalculado.caboIluminacao}",
                 "${ambienteCalculado.quantTomada}",
                 "${ambienteCalculado.potenciaTotalTomada}",
                 "${ambienteCalculado.amperagemTomada}",
+                "${ambienteCalculado.caboTomada}",
                 "${ambienteCalculado.btuPorM2}",
                 "${ambienteCalculado.quantPessoasAmbiente}",
                 "${ambienteCalculado.quantEletrodomestico}",
@@ -636,6 +602,7 @@ class ShowResultScreen {
                 "${ambienteCalculado.IDRS}",
                 "${ambienteCalculado.potenciaEletriaAc}",
                 "${ambienteCalculado.amperagemCircuitoAc}",
+                "${ambienteCalculado.caboArCond}",
             )
             var listItem: List<String> = listOf()
             listItem = listOf(
@@ -649,23 +616,27 @@ class ShowResultScreen {
                 "LumensLampada:",
                 "Lumens Total:",
                 "Potencia da Lampada:",
-                "Total de Lampada:",
+                "Total de Lampadas:",
                 "Potencia Total:",
                 "(A)Lampada:",
+                "Cabo Para Ilumnação:",
                 "Quant Tomada:",
                 "Potencia Tomada:",
-                "Corrente Tomada:",
+                "Corrente Total das Tomada:",
+                "Cabo Para Tomada:",
                 "btusM²:",
-                "QuantPessoa no Ambiente:",
-                "QuantEletronico no Ambiente:",
-                "btusAdicionalPessoa:",
-                "btusAdicionaleletronico:",
-                "btusAdicionalIndSolar:",
-                "btusTotal:",
+                "Quant. Pessoa no Ambiente:",
+                "Quant Eletronico no Ambiente:",
+                "btus Adicional Pessoa:",
+                "btus Adicional Eletronico:",
+                "btus Adicional Incidenica Solar:",
+                "btus Total:",
                 "IDRS:",
                 "(W)Arcond:",
-                "(A)Arcond:"
-            )
+                "(A)Arcond:",
+                "Cabo Para Ar-condicionado:",
+
+                )
 
             Card(
                 modifier = Modifier.fillMaxSize(),
@@ -739,9 +710,11 @@ class ShowResultScreen {
                 "${ambienteFromDbRoom.totalLuminaria}",
                 "${ambienteFromDbRoom.potenciaTotalIlum}",
                 "${ambienteFromDbRoom.amperagemCircuitoIlum}",
+                "${ambienteFromDbRoom.caboIluminacao}",
                 "${ambienteFromDbRoom.quantTomada}",
                 "${ambienteFromDbRoom.potenciaTotalTomada}",
                 "${ambienteFromDbRoom.amperagemTomada}",
+                "${ambienteFromDbRoom.caboTomada}",
                 "${ambienteFromDbRoom.btuPorM2}",
                 "${ambienteFromDbRoom.quantPessoasAmbiente}",
                 "${ambienteFromDbRoom.quantEletrodomestico}",
@@ -752,6 +725,7 @@ class ShowResultScreen {
                 "${ambienteFromDbRoom.IDRS}",
                 "${ambienteFromDbRoom.potenciaEletriaAc}",
                 "${ambienteFromDbRoom.amperagemCircuitoAc}",
+                "${ambienteFromDbRoom.caboArCond}",
             )
             var listItem: List<String> = listOf()
             listItem = listOf(
@@ -766,22 +740,26 @@ class ShowResultScreen {
                 "LumensLampada:",
                 "Lumens Total:",
                 "Potencia da Lampada:",
-                "Total de Lampada:",
+                "Total de Lampadas:",
                 "Potencia Total:",
                 "(A)Lampada:",
+                "Cabo Para Ilumnação (mm²):",
                 "Quant Tomada:",
                 "Potencia Tomada:",
-                "Corrente Tomada:",
+                "Corrente Total das Tomada:",
+                "Cabo Para Tomada (mm²):",
                 "btusM²:",
-                "QuantPessoa no Ambiente:",
-                "QuantEletronico no Ambiente:",
-                "btusAdicionalPessoa:",
-                "btusAdicionaleletronico:",
-                "btusAdicionalIndSolar:",
-                "btusTotal:",
+                "Quant. Pessoa no Ambiente:",
+                "Quant Eletronico no Ambiente:",
+                "btus Adicional Pessoa:",
+                "btus Adicional Eletronico:",
+                "btus Adicional Incidenica Solar:",
+                "btus Total:",
                 "IDRS:",
                 "(W)Arcond:",
-                "(A)Arcond:"
+                "(A)Arcond:",
+                "Cabo Para Ar-condicionado (mm²):",
+
             )
 
             Card(
@@ -842,6 +820,7 @@ class ShowResultScreen {
                             modifier = Modifier.padding(start = 5.dp, bottom = 5.dp),
                             horizontalArrangement = Arrangement.Start
                         ) {
+
                             Icon(Icons.Default.Delete, contentDescription = "Deletar", tint = Color.Red)
 
                             Text(text = "Deletar",
@@ -883,8 +862,6 @@ class ShowResultScreen {
             }
         }
     }
-
-
 }
 
 

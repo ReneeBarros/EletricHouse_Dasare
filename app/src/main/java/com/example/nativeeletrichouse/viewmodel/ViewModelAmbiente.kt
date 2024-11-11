@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nativeeletrichouse.api.api_eletri_house.ApiEletricHouse
 import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
+import com.example.nativeeletrichouse.maper.MapperResponseApiToResponseUi
 import com.example.nativeeletrichouse.repository.AmbienteRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,7 @@ class ViewModelAmbiente(
     val repository: AmbienteRepository
 ): ViewModel() {
 
-    fun addAmbiente(ambiente: List<ResponseCaculateAmbiente>){
+    fun addAmbiente(ambiente: List<MapperResponseApiToResponseUi>){
        viewModelScope.launch {
            ambiente.forEach {
                repository.saveAmbeinte(ambiente = it)

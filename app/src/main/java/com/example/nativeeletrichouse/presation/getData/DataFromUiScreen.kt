@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
@@ -51,22 +49,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.nativeeletrichouse.R
 import com.example.nativeeletrichouse.api.api_eletri_house.ApiEletricHouse
-import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.data.request.RequestCalcularArCond
 import com.example.nativeeletrichouse.data.request.RequestCalcularTomada
 import com.example.nativeeletrichouse.data.request.RequestCalculateAmbiente
 import com.example.nativeeletrichouse.data.request.RequestCalculateIluminacao
+import com.example.nativeeletrichouse.domain.datalogic.DataLogic
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
-import com.example.nativeeletrichouse.presation.components.Spinner
-import com.example.nativeeletrichouse.presation.components.widget.CampoEntradaDados
 import com.example.nativeeletrichouse.presation.components.widget.CardGetDataUi
 import com.example.nativeeletrichouse.presation.components.widget.CardInputThreeCamp
 import com.example.nativeeletrichouse.presation.components.widget.ThreeSpinner
+import com.example.nativeeletrichouse.presation.components.widget.TopBar
 import com.example.nativeeletrichouse.presation.theme.Dimension
 import com.example.nativeeletrichouse.presation.uirequestdata.UiRequestDataScreen
+import com.example.nativeeletrichouse.presation.uirequestdata.UiRequestDataScreenWc
 import com.shashank.sony.fancytoastlib.FancyToast
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 
 class DataFromUiScreen(
 
@@ -93,25 +90,13 @@ class DataFromUiScreen(
         val listAmbienteHome: MutableList<RequestCalculateAmbiente> = mutableListOf()
         var loading by remember { mutableStateOf(false) }
 
-
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-
-                            Text(
-                                text = "Eletric House", fontSize = 35.sp,
-                                fontWeight = FontWeight.Bold,
-                                fontStyle = FontStyle.Normal,
-                                fontFamily = FontFamily.SansSerif
-                            )
-                        }
-                    }
+                TopBar(
+                    title = "Eletric House",
+                    modifier = Modifier,
+                    navController = navController,
+                    fontSize = 16.sp
                 )
             },
             bottomBar = {
@@ -119,106 +104,19 @@ class DataFromUiScreen(
                     containerColor = Color.Transparent,
                     actions = {
                         if(home){
+                            //Calcular
                             NavigationBarItem(
-
                                 selected = true,
                                 onClick = {
-
-                                    if(
-                                        uiState.insertAmbiente.isEmpty()||
-                                        uiState.largura.isEmpty()||
-                                        uiState.comprimento.isEmpty()||
-                                        uiState.tensao.isEmpty()||
-                                        uiState.insertNameAmb.isEmpty()
-                                    ){
-                                        //Toast.makeText(context, "Necessario Preencher Todos os Campos", Toast.LENGTH_SHORT).show()
-                                        FancyToast.makeText(context,
-                                            "Necessario Preencher Todos os Campos",
-                                            FancyToast.LENGTH_SHORT,FancyToast.WARNING,false).show()
-                                    }
-                                    else{
-                                        val request = RequestCalculateAmbiente(
-                                            uiState.insertAmbiente,
-                                            uiState.insertNameAmb,
-                                            uiState.comprimento.replace(",", ".").toDouble(),
-                                            uiState.insidenciaSolar,
-                                            uiState.largura.replace(",", ".").toDouble(),
-                                            uiState.potenciaLamp,
-                                            uiState.quantEletrodomestico.toInt(),
-                                            uiState.quantPessoaAmbient.toInt(),
-                                            uiState.tensao.toInt()
-                                        )
-
-                                        if(listAmbienteHome.isEmpty()){
-                                            listAmbienteHome.add(request)
-
-                                            scope.launch {
-                                                loading = true
-                                                val listAmbienteCalculado = mutableListOf<String>()
-                                                val json = Json{prettyPrint = true}
-                                                val responseApi = ApiEletricHouse().apiCalcularListaDeAmbiente(listAmbienteHome)
-
-                                                responseApi.forEach{
-                                                     listAmbienteCalculado.add(json.encodeToString(ResponseCaculateAmbiente.serializer(),it))
-                                                }
-                                                navController.navigate(
-                                                    route = "ResultadoApi/${true}/${listAmbienteCalculado}"
-                                                )
-                                            }
-
-                                        }else{
-
-                                            scope.launch {
-                                                loading = true
-                                                val listAmbienteCalculado = mutableListOf<String>()
-                                                val json = Json{prettyPrint = true}
-                                                val responseApi = ApiEletricHouse().apiCalcularListaDeAmbiente(listAmbienteHome)
-
-                                                responseApi.forEach{
-                                                    listAmbienteCalculado.add(json.encodeToString(ResponseCaculateAmbiente.serializer(),it))
-                                                }
-                                                navController.navigate(
-                                                    route = "ResultadoApi/${true}/${listAmbienteCalculado}"
-                                                )
-                                            }
-                                        }
-
-                                        /*scope.launch {
-                                            val responseApi = ApiEletricHouse().apiCalcularAmbiente(request)
-
-                                            navController.navigate(
-                                                HomeGraph.ShowResultData(
-                                                    id = 1,
-                                                    ambiente = responseApi.ambiente,
-                                                    largura = responseApi.largura.toFloat(),
-                                                    comprimento = responseApi.comprimento.toFloat(),
-                                                    area = responseApi.area.toFloat(),
-                                                    lumensAmbiente = responseApi.lumensAmbiente,
-                                                    lumensLuminaria = responseApi.lumensLuminaria,
-                                                    lumensTotal = responseApi.lumensTotal.toFloat(),
-                                                    potenciaLuminaria = responseApi.potenciaLuminaria.toFloat(),
-                                                    totalLuminaria = responseApi.totalLuminaria.toFloat(),
-                                                    potenciaTotal = responseApi.potenciaTotalIlum.toFloat(),
-                                                    amperagemIluminacao = responseApi.amperagemCircuitoIlum.toFloat(),
-                                                    quantToamda = responseApi.quantTomada,
-                                                    potenciaTotalTomada = responseApi.potenciaTotalTomada.toFloat(),
-                                                    amperagemTomada = responseApi.amperagemTomada.toFloat(),
-                                                    tensao = responseApi.tensao,
-                                                    quantPessoasAmbiente = responseApi.quantPessoasAmbiente,
-                                                    quantEletrodomestico = responseApi.quantEletrodomestico,
-                                                    btuAdicionalPorPessoa = responseApi.btuAdicionalPorPessoa,
-                                                    btuAdicionalPorEletronico = responseApi.btuAdicionalPorEletronico,
-                                                    btuPorM2 = responseApi.btuPorM2,
-                                                    btusTotal = responseApi.btusTotal,
-                                                    btuAdicionalInsidenciaRaioSolar = responseApi.btuAdicionalInsidenciaRaioSolar,
-                                                    IDRS = responseApi.IDRS.toFloat(),
-                                                    potenciaEletria = responseApi.potenciaEletriaAc.toString(),
-                                                    amperagemCircuitoAc = responseApi.amperagemCircuitoAc.toString(),
-                                                    calcular = "ambiente"
-                                                )
-                                            )
-                                        }*/
-                                    }
+                                    loading = true
+                                    DataLogic().CalculateDataLogic(
+                                        uiState = uiState,
+                                        navController = navController,
+                                        context = context,
+                                        listAmbienteHome = listAmbienteHome,
+                                        scope = scope,
+                                        isLoading = loading
+                                    )
                                 },
                                 icon = {
                                     Icon(
@@ -231,6 +129,7 @@ class DataFromUiScreen(
                                 label = { Text(text = "Calcular") }
                             )
 
+                            //Adicionar Ambientes Calculados na lista.
                             NavigationBarItem(
                                 modifier = Modifier.background(Color.Transparent),
                                 colors = NavigationBarItemColors(
@@ -245,29 +144,9 @@ class DataFromUiScreen(
                                 selected = uiState.isSelected,
                                 onClick = {
                                     stateHolder.seIsSelected(uiState.isSelected)
-                                    if(
-                                        uiState.largura.isEmpty()||uiState.comprimento.isEmpty()||uiState.insertAmbiente=="Escolher Ambiente"
-                                    ){
-                                        Toast.makeText(context, "Necessario Preencher Todos os Campos", Toast.LENGTH_SHORT).show()
-
-                                    }
-                                    else{
-                                        val request = RequestCalculateAmbiente(
-                                            uiState.insertAmbiente,
-                                            uiState.insertNameAmb,
-                                            uiState.comprimento.replace(",", ".").toDouble(),
-                                            uiState.insidenciaSolar,
-                                            uiState.largura.replace(",", ".").toDouble(),
-                                            uiState.potenciaLamp,
-                                            uiState.quantEletrodomestico.toInt(),
-                                            uiState.quantPessoaAmbient.toInt(),
-                                            uiState.tensao.toInt()
-                                        )
-                                        listAmbienteHome.add(request)
-                                        FancyToast.makeText(context, "Adicionado", FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show()
-
-                                    }
-
+                                    DataLogic().AddDataLogicToList(
+                                        uiState, context, listAmbienteHome
+                                    )
                                 },
                                 icon = {
                                     Icon(
@@ -458,14 +337,14 @@ class DataFromUiScreen(
 
         ) { paddingStad ->
 
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingStad)
             ) {
                 Row(modifier = Modifier.fillMaxWidth( ),
-                    horizontalArrangement = Arrangement.SpaceAround) {
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
                     val listaImag = listOf(
                         painterResource(R.drawable.calculadora),
                         painterResource(R.drawable.lampada_acesa),
@@ -498,274 +377,218 @@ class DataFromUiScreen(
                         )
                     }
                 }
+                else{
+                    if (home) {
+                        if(uiState.insertAmbiente=="Banheiro"|| uiState.insertAmbiente =="Escada/Dispensa/Garagem/"){
 
-                if (home) {
-                    if(uiState.insertAmbiente=="Banheiro"|| uiState.insertAmbiente =="Escada/Dispensa/Garagem/"){
+                            UiRequestDataScreenWc(
+                                listAmbiente = stringArrayResource( R.array.ListaAmbientes),
+                                listPotenciaLamp = stringArrayResource( R.array.ListaLuminaria),
+                                listTensao = stringArrayResource(R.array.Tensao),
+                                selecionandoAmbiente = {stateHolder.setInsertambiente(it)},
+                                selecionandoLampada = {stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())},
+                                selecionandoTensao = {stateHolder.setTensao(it)},
+                                onValueChangeNomeAmbiente = {stateHolder.setInsertNameAmb(it)},
+                                onValueChangeLargura = {stateHolder.setLargura(it)},
+                                onValueChangeComp = {stateHolder.setComprimento(it)},
+                                valueNomeAmbiente = uiState.insertNameAmb,
+                                valueLargura = uiState.largura,
+                                valuecomp = uiState.comprimento,
+                                itemselecAmbiente = "Banheiro",
+                                itemselecTensao = uiState.tensao,
+                                itemselecLamp = uiState.potenciaLamp.toString(),
+                            )
 
 
-                        CampoEntradaDados(
+                            /*CampoEntradaDados(
 
-                            onclick1 = { nameAmb ->
-                                stateHolder.setInsertNameAmb(nameAmb)
-                            },
-                            onclick2 = { largura ->
-                                stateHolder.setLargura(largura)
-                            },
-                            onclick3 = { comp ->
-                                stateHolder.setComprimento(comp)
-                            },
-                            onclick4Radio1Sim = {
-                                stateHolder.setInsidenciaSolar(value = true)
-                            },
-                            onclick4Radio2Nao = {
-                                stateHolder.setInsidenciaSolar(value = false)
-                            },
-                            onclick4Radio3220 = {
-                                stateHolder.setTensao220(value = true)
-                                stateHolder.setTensao110(value = false)
-                                stateHolder.setTensao("220")
-                            },
-                            onclick4Radio4110 = {
-                                stateHolder.setTensao220(value = false)
-                                stateHolder.setTensao110(value = true)
-                                stateHolder.setTensao("110")
-                            },
-                            painterImg1 = painterResource(R.drawable.calculadora),
-                            painterImg2 = painterResource(R.drawable.lampada_acesa),
-                            painterImg3 = painterResource(R.drawable.arcondsbg),
-                            painterImg4 = painterResource(R.drawable.tomada_simples_2p_t_10a),
-                            label1 = "Nome Ambiente",
-                            label2 = "Largura",
-                            label3 = "Comprimento",
-                            value1 = uiState.insertNameAmb,
-                            value2 = uiState.largura,
-                            value3 = uiState.comprimento,
-                            selecionado1 = uiState.insidenciaSolar,
-                            selecionado2 = !uiState.insidenciaSolar,
-                            selecionado3 = uiState.tensao220,
-                            selecionado4 = uiState.tensao110,
-                            keyboardType1 = KeyboardType.Text,
-                            keyboardType2 = KeyboardType.Number,
-                            keyboardType3 = KeyboardType.Number,
-                            listaItensAmb = stringArrayResource( R.array.ListaAmbientes),
-                            listaItensLampada = stringArrayResource( R.array.ListaLuminaria),
-                            listaItensPessoas = stringArrayResource( R.array.Numeros),
-                            listaItensEletronic = stringArrayResource( R.array.Numeros),
-                            itemSelecionadoAmb = uiState.insertAmbiente,
-                            selecionandoItensAmb = {
-                                stateHolder.setInsertambiente(it)
-                            },
-                            itemSelecionadoLamp = "(W)Lampada: ${uiState.potenciaLamp}",
-                            selecionandoLampada = {
-                                stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())
-                            },
+                                onclick1 = { nameAmb ->
+                                    stateHolder.setInsertNameAmb(nameAmb)
+                                },
+                                onclick2 = { largura ->
+                                    stateHolder.setLargura(largura)
+                                },
+                                onclick3 = { comp ->
+                                    stateHolder.setComprimento(comp)
+                                },
+                                onclick4Radio1Sim = {
+                                    stateHolder.setInsidenciaSolar(value = true)
+                                },
+                                onclick4Radio2Nao = {
+                                    stateHolder.setInsidenciaSolar(value = false)
+                                },
+                                onclick4Radio3220 = {
+                                    stateHolder.setTensao220(value = true)
+                                    stateHolder.setTensao110(value = false)
+                                    stateHolder.setTensao("220")
+                                },
+                                onclick4Radio4110 = {
+                                    stateHolder.setTensao220(value = false)
+                                    stateHolder.setTensao110(value = true)
+                                    stateHolder.setTensao("110")
+                                },
+                                painterImg1 = painterResource(R.drawable.calculadora),
+                                painterImg2 = painterResource(R.drawable.lampada_acesa),
+                                painterImg3 = painterResource(R.drawable.arcondsbg),
+                                painterImg4 = painterResource(R.drawable.tomada_simples_2p_t_10a),
+                                label1 = "Nome Ambiente",
+                                label2 = "Largura",
+                                label3 = "Comprimento",
+                                value1 = uiState.insertNameAmb,
+                                value2 = uiState.largura,
+                                value3 = uiState.comprimento,
+                                selecionado1 = uiState.insidenciaSolar,
+                                selecionado2 = !uiState.insidenciaSolar,
+                                selecionado3 = uiState.tensao220,
+                                selecionado4 = uiState.tensao110,
+                                keyboardType1 = KeyboardType.Text,
+                                keyboardType2 = KeyboardType.Number,
+                                keyboardType3 = KeyboardType.Number,
+                                listaItensAmb = stringArrayResource( R.array.ListaAmbientes),
+                                listaItensLampada = stringArrayResource( R.array.ListaLuminaria),
+                                listaItensPessoas = stringArrayResource( R.array.Numeros),
+                                listaItensEletronic = stringArrayResource( R.array.NumerosEletronic),
+                                itemSelecionadoAmb = uiState.insertAmbiente,
+                                selecionandoItensAmb = {
+                                    stateHolder.setInsertambiente(it)
+                                },
+                                itemSelecionadoLamp = "(W)Lampada: ${uiState.potenciaLamp}",
+                                selecionandoLampada = {
+                                    stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())
+                                },
 
-                            itemSelecionadoPessoa = "0",
-                            selecionandoQuantPessoa = {
-                                stateHolder.setquantPessoaAmbient("0")
-                            },
-                            itemSelecionadoEletronico = "0",
-                            selecionandoQuantEletronico = {
-                                stateHolder.setQuantEletrodomestico("0")
-                            }
-                        )
-                    }
-                    else{
-                        UiRequestDataScreen(
-                            listAmbiente = stringArrayResource( R.array.ListaAmbientes),
-                            listPotenciaLamp = stringArrayResource( R.array.ListaLuminaria),
-                            listTensao = stringArrayResource(R.array.Tensao),
-                            listQuantidade = stringArrayResource( R.array.Numeros),
-                            selecionandoAmbiente = {stateHolder.setInsertambiente(it)},
-                            selecionandoLampada = {stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())},
-                            selecionandoTensao = {stateHolder.setTensao(it)},
-                            onValueChangeNomeAmbiente = {stateHolder.setInsertNameAmb(it)},
-                            onValueChangeLargura = {stateHolder.setLargura(it)},
-                            onValueChangeComp = {stateHolder.setComprimento(it)},
-                            incidenciaSolarSim = {stateHolder.setInsidenciaSolar(true)},
-                            incidenciaSolarNao = {stateHolder.setInsidenciaSolar(false)},
-                            valuIncidenciaSolarSim = !uiState.insidenciaSolar,
-                            valuIncidenciaSolarNao = uiState.insidenciaSolar,
-                            valueNomeAmbiente = uiState.insertNameAmb,
-                            valueLargura = uiState.largura,
-                            valuecomp = uiState.comprimento,
-                            itemselecAmbiente = uiState.insertAmbiente,
-                            itemselecTensao = uiState.tensao,
-                            itemselecLamp = uiState.potenciaLamp.toString(),
-                            itemselecQtdePessoa = uiState.quantPessoaAmbient,
-                            itemselecQtdeEletr = uiState.quantEletrodomestico,
-                            qtdePessoaAmbiente = {stateHolder.setquantPessoaAmbient(it)},
-                            qtdeEletronicoAmb = {stateHolder.setQuantEletrodomestico(it)}
-                        )
+                                itemSelecionadoPessoa = "0",
+                                selecionandoQuantPessoa = {
+                                    stateHolder.setquantPessoaAmbient("0")
+                                },
+                                itemSelecionadoEletronico = "0",
+                                selecionandoQuantEletronico = {
+                                    stateHolder.setQuantEletrodomestico("0")
+                                }
+                            )*/
+                        }
+                        else{
+                            UiRequestDataScreen(
+                                listAmbiente = stringArrayResource( R.array.ListaAmbientes),
+                                listPotenciaLamp = stringArrayResource( R.array.ListaLuminaria),
+                                listTensao = stringArrayResource(R.array.Tensao),
+                                listQuantidade = stringArrayResource( R.array.Numeros),
+                                listQuantidadeEletronic = stringArrayResource( R.array.NumerosEletronic),
+                                selecionandoAmbiente = {stateHolder.setInsertambiente(it)},
+                                selecionandoLampada = {stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())},
+                                selecionandoTensao = {stateHolder.setTensao(it)},
+                                onValueChangeNomeAmbiente = {stateHolder.setInsertNameAmb(it)},
+                                onValueChangeLargura = {stateHolder.setLargura(it)},
+                                onValueChangeComp = {stateHolder.setComprimento(it)},
+                                incidenciaSolarSim = {stateHolder.setInsidenciaSolar(true)},
+                                incidenciaSolarNao = {stateHolder.setInsidenciaSolar(false)},
+                                valuIncidenciaSolarSim = !uiState.insidenciaSolar,
+                                valuIncidenciaSolarNao = uiState.insidenciaSolar,
+                                valueNomeAmbiente = uiState.insertNameAmb,
+                                valueLargura = uiState.largura,
+                                valuecomp = uiState.comprimento,
+                                itemselecAmbiente = uiState.insertAmbiente,
+                                itemselecTensao = uiState.tensao,
+                                itemselecLamp = uiState.potenciaLamp.toString(),
+                                itemselecQtdePessoa = uiState.quantPessoaAmbient,
+                                itemselecQtdeEletr = uiState.quantEletrodomestico,
+                                qtdePessoaAmbiente = {stateHolder.setquantPessoaAmbient(it)},
+                                qtdeEletronicoAmb = {stateHolder.setQuantEletrodomestico(it)}
+                            )
 
-                        /*CampoEntradaDados(
+                            /*CampoEntradaDados(
 
-                            onclick1 = { nameAmb ->
-                                stateHolder.setInsertNameAmb(nameAmb)
-                            },
-                            onclick2 = { largura ->
-                                stateHolder.setLargura(largura)
-                            },
-                            onclick3 = { comp ->
-                                stateHolder.setComprimento(comp)
-                            },
-                            onclick4Radio1Sim = {
-                                stateHolder.setInsidenciaSolar(value = true)
-                            },
-                            onclick4Radio2Nao = {
-                                stateHolder.setInsidenciaSolar(value = false)
-                            },
-                            onclick4Radio3220 = {
-                                stateHolder.setTensao220(value = true)
-                                stateHolder.setTensao110(value = false)
-                                stateHolder.setTensao("220")
-                            },
-                            onclick4Radio4110 = {
-                                stateHolder.setTensao220(value = false)
-                                stateHolder.setTensao110(value = true)
-                                stateHolder.setTensao("110")
-                            },
-                            painterImg1 = painterResource(R.drawable.calculadora),
-                            painterImg2 = painterResource(R.drawable.lampada_acesa),
-                            painterImg3 = painterResource(R.drawable.arcondsbg),
-                            painterImg4 = painterResource(R.drawable.tomada_simples_2p_t_10a),
-                            label1 = "Nome Ambiente",
-                            label2 = "Largura",
-                            label3 = "Comprimento",
-                            value1 = uiState.insertNameAmb,
-                            value2 = uiState.largura,
-                            value3 = uiState.comprimento,
-                            selecionado1 = uiState.insidenciaSolar,
-                            selecionado2 = !uiState.insidenciaSolar,
-                            selecionado3 = uiState.tensao220,
-                            selecionado4 = uiState.tensao110,
-                            keyboardType1 = KeyboardType.Text,
-                            keyboardType2 = KeyboardType.Number,
-                            keyboardType3 = KeyboardType.Number,
-                            listaItensAmb = stringArrayResource( R.array.ListaAmbientes),
-                            listaItensLampada = stringArrayResource( R.array.ListaLuminaria),
-                            listaItensPessoas = stringArrayResource( R.array.Numeros),
-                            listaItensEletronic = stringArrayResource( R.array.Numeros),
-                            itemSelecionadoAmb = uiState.insertAmbiente,
-                            selecionandoItensAmb = {
-                                stateHolder.setInsertambiente(it)
-                            },
-                            itemSelecionadoLamp = "(W)Lampada: ${uiState.potenciaLamp}",
-                            selecionandoLampada = {
-                                stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())
-                            },
+                                onclick1 = { nameAmb ->
+                                    stateHolder.setInsertNameAmb(nameAmb)
+                                },
+                                onclick2 = { largura ->
+                                    stateHolder.setLargura(largura)
+                                },
+                                onclick3 = { comp ->
+                                    stateHolder.setComprimento(comp)
+                                },
+                                onclick4Radio1Sim = {
+                                    stateHolder.setInsidenciaSolar(value = true)
+                                },
+                                onclick4Radio2Nao = {
+                                    stateHolder.setInsidenciaSolar(value = false)
+                                },
+                                onclick4Radio3220 = {
+                                    stateHolder.setTensao220(value = true)
+                                    stateHolder.setTensao110(value = false)
+                                    stateHolder.setTensao("220")
+                                },
+                                onclick4Radio4110 = {
+                                    stateHolder.setTensao220(value = false)
+                                    stateHolder.setTensao110(value = true)
+                                    stateHolder.setTensao("110")
+                                },
+                                painterImg1 = painterResource(R.drawable.calculadora),
+                                painterImg2 = painterResource(R.drawable.lampada_acesa),
+                                painterImg3 = painterResource(R.drawable.arcondsbg),
+                                painterImg4 = painterResource(R.drawable.tomada_simples_2p_t_10a),
+                                label1 = "Nome Ambiente",
+                                label2 = "Largura",
+                                label3 = "Comprimento",
+                                value1 = uiState.insertNameAmb,
+                                value2 = uiState.largura,
+                                value3 = uiState.comprimento,
+                                selecionado1 = uiState.insidenciaSolar,
+                                selecionado2 = !uiState.insidenciaSolar,
+                                selecionado3 = uiState.tensao220,
+                                selecionado4 = uiState.tensao110,
+                                keyboardType1 = KeyboardType.Text,
+                                keyboardType2 = KeyboardType.Number,
+                                keyboardType3 = KeyboardType.Number,
+                                listaItensAmb = stringArrayResource( R.array.ListaAmbientes),
+                                listaItensLampada = stringArrayResource( R.array.ListaLuminaria),
+                                listaItensPessoas = stringArrayResource( R.array.Numeros),
+                                listaItensEletronic = stringArrayResource( R.array.Numeros),
+                                itemSelecionadoAmb = uiState.insertAmbiente,
+                                selecionandoItensAmb = {
+                                    stateHolder.setInsertambiente(it)
+                                },
+                                itemSelecionadoLamp = "(W)Lampada: ${uiState.potenciaLamp}",
+                                selecionandoLampada = {
+                                    stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())
+                                },
 
-                            itemSelecionadoPessoa = uiState.quantPessoaAmbient,
-                            selecionandoQuantPessoa = {
-                                stateHolder.setquantPessoaAmbient(it)
-                            },
-                            itemSelecionadoEletronico = uiState.quantEletrodomestico,
-                            selecionandoQuantEletronico = {
-                                stateHolder.setQuantEletrodomestico(it)
-                            }
-                        )*/
+                                itemSelecionadoPessoa = uiState.quantPessoaAmbient,
+                                selecionandoQuantPessoa = {
+                                    stateHolder.setquantPessoaAmbient(it)
+                                },
+                                itemSelecionadoEletronico = uiState.quantEletrodomestico,
+                                selecionandoQuantEletronico = {
+                                    stateHolder.setQuantEletrodomestico(it)
+                                }
+                            )*/
+                        }
                     }
                 }
                 if (iluminacao) {
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(Dimension.big),
-                        elevation = CardDefaults.elevatedCardElevation(Dimension.medium),
-                        shape = RoundedCornerShape(Dimension.medium),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color.White,
-                            disabledContainerColor = Color.White
-                        )
+                    UiRequestDataScreenWc(
+                        listAmbiente = stringArrayResource( R.array.ListaAmbientes),
+                        listPotenciaLamp = stringArrayResource( R.array.ListaLuminaria),
+                        listTensao = stringArrayResource(R.array.Tensao),
+                        selecionandoAmbiente = {stateHolder.setInsertambiente(it)},
+                        selecionandoLampada = {stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())},
+                        selecionandoTensao = {stateHolder.setTensao(it)},
+                        onValueChangeNomeAmbiente = {stateHolder.setInsertNameAmb(it)},
+                        onValueChangeLargura = {stateHolder.setLargura(it)},
+                        onValueChangeComp = {stateHolder.setComprimento(it)},
+                        valueNomeAmbiente = uiState.insertNameAmb,
+                        valueLargura = uiState.largura,
+                        valuecomp = uiState.comprimento,
+                        itemselecAmbiente = uiState.insertAmbiente,
+                        itemselecTensao = uiState.tensao,
+                        itemselecLamp = uiState.potenciaLamp.toString(),
+                    )
 
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(Dimension.medium),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-/*                            Spinner(
-                                listaItens = stringArrayResource(id = R.array.ListaAmbientes),
-                                itemSelecionado = uiState.insertAmbiente
-                            ) { amb ->
-                                stateHolder.setInsertambiente(amb)
-                            }*/
-
-                            OutlinedTextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.Transparent),
-                                shape = RoundedCornerShape(30.dp),
-                                value = uiState.insertNameAmb,
-                                onValueChange = { value ->
-                                    stateHolder.setInsertNameAmb(value)
-                                },
-                                label = { Text(text = "Nome do Ambiente") },
-                                colors = TextFieldDefaults.colors(
-                                    focusedIndicatorColor = Color.Transparent,
-                                    disabledTextColor = Color.Transparent,
-                                    disabledContainerColor = Color.Transparent,
-                                    focusedContainerColor = Color.Transparent,
-                                    focusedTextColor = Color.Gray,
-                                    unfocusedTextColor = Color.Gray,
-                                    disabledLabelColor = Color.Gray,
-                                    unfocusedContainerColor = Color.Transparent
-                                )
-                            )
-                        }
-
-
-                        CardGetDataUi(
-                            onclick1 = { largura ->
-                                stateHolder.setLargura(largura)
-                            },
-                            onclick2 = { comp ->
-                                stateHolder.setComprimento(comp)
-                            },
-                            onclick3 = { tensao ->
-                                stateHolder.setTensao(tensao)
-                            },
-                            painter = painterResource(R.drawable.calculadora),
-                            label1 = "largura",
-                            label2 = "Comprimento",
-                            label3 = "Tensão",
-                            value1 = uiState.largura,
-                            value2 = uiState.comprimento,
-                            value3 = uiState.tensao,
-                            keyboardType1 = KeyboardType.Number,
-                            keyboardType2 = KeyboardType.Number,
-                            keyboardType3 = KeyboardType.Number,
-                            threeInput = true,
-                            twoInput = false
-                        )
-
-
-                        CardInputThreeCamp(
-                            onclick1 = { tens ->
-                                stateHolder.setTensao(tens)
-                            },
-                            onclick2 = { area ->
-                                stateHolder.setArea(area)
-                            },
-                            label1 = "Tensão",
-                            label2 = "Area",
-                            value1 = uiState.tensao,
-                            value2 = uiState.area,
-                            keyboardType1 = KeyboardType.Number,
-                            keyboardType2 = KeyboardType.Number,
-                            painter = painterResource(id = R.drawable.lampada_acesa),
-                            listitem = stringArrayResource(id = R.array.ListaLuminaria),
-                            getItem = {
-                                stateHolder.setpotenciaLamp(it.replace(",", ".").toDouble())
-                            },
-                            itemselecionado = "Lampada(W): " + uiState.potenciaLamp
-                        )
-                    }
 
 
                 }
+
                 if (arcond) {
                     Card(
                         modifier = Modifier
@@ -905,6 +728,7 @@ class DataFromUiScreen(
                         }
                     )
                 }
+
                 if (tomada) {
 
                     Card(
@@ -1029,7 +853,6 @@ class DataFromUiScreen(
 
                 }
             }
-
         }
     }
 }

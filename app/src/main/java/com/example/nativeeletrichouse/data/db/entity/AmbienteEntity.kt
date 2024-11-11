@@ -10,6 +10,7 @@ data class AmbienteEntity(
 
     @PrimaryKey(autoGenerate = true)
     val id:Long,
+    val IDRS: Double,
     val nomeAmbiente:String,
     val ambiente: String,
     val amperagemCircuitoAc: Double,
@@ -26,7 +27,6 @@ data class AmbienteEntity(
     val lumensAmbiente: Int,
     val lumensLuminaria: Int,
     val lumensTotal: Double,
-    val IDRS: Double,
     val potenciaEletriaAc: Double,
     val potenciaLuminaria: Double,
     val potenciaTotalIlum: Double,
@@ -35,5 +35,8 @@ data class AmbienteEntity(
     val quantPessoasAmbiente: Int,
     val quantTomada: Int,
     val tensao: Int,
-    val totalLuminaria: Double
+    val totalLuminaria: Double,
+    val caboIluminacao:Double,
+    val caboTomada:Double,
+    val caboArCond:Double,
 )

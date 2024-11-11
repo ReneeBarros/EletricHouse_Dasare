@@ -64,8 +64,3 @@ data class ResponseCaculateAmbiente(
 }
 
 
-
-fun listaResponseAmbiente(){
-
-}
-
