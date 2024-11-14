@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,12 +19,14 @@ import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
+import com.example.nativeeletrichouse.data.reponse.ResponseCalculoIluminacao
 import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
 import com.example.nativeeletrichouse.dto.DtoResponseEletricHouse
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
 import com.example.nativeeletrichouse.maper.MapperResponseApiToResponseUi
 import com.example.nativeeletrichouse.presation.calcularcabo.CalcularCaboScreen
 import com.example.nativeeletrichouse.presation.getData.DataFromUiScreen
+import com.example.nativeeletrichouse.presation.iluminacao.CalcularIluminacaoScreen
 import com.example.nativeeletrichouse.presation.mainui.MainScreen
 import com.example.nativeeletrichouse.presation.showresult.ShowResultScreen
 import com.example.nativeeletrichouse.presation.solar.SystemSolarScreen
@@ -49,6 +52,7 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
                         val viewModelAmbiente = koinViewModel<ViewModelAmbiente>()
                         val caboEletricoInterFace: CalculoCaboEletricoInterFace by inject()
+                        val context = LocalContext.current
 
                         NavHost(
                             navController = navController,
@@ -61,15 +65,49 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
+                            composable<HomeGraph.calcularCabo> {
+                                    CalcularCaboScreen(
+                                        navController = navController,
+                                        caboCalculator = caboEletricoInterFace
+                                    ).CalcularCaboUiScreen()
+
+                            }
+
                             composable<HomeGraph.placaSolar> {
                                 SystemSolarScreen().SystemSolarUiScreen(
                                     navController = navController
                                 )
                             }
-                            composable<HomeGraph.calcularCabo> {
-                                CalcularCaboScreen(caboEletricoInterFace, navController).CalcularCaboUiScreen()
+                            composable<HomeGraph.calcularIluminacao> {
+                                CalcularIluminacaoScreen().CalcularIluminacaoUiScreen(
+                                    navController = navController, context = context
+                                )
                             }
 
+                            composable<ResponseCalculoIluminacao> {
+                                    bringData ->
+                                val bring: ResponseCalculoIluminacao = bringData.toRoute()
+                                ShowResultScreen().ShowResultApp(
+                                    DtoResponseEletricHouse.EletricHouseComplete(
+                                        id = 0,
+                                        ambiente = bring.ambiente,
+                                        largura = bring.largura.toFloat(),
+                                        comprimento = bring.comprimento.toFloat(),
+                                        tensao = bring.tensao,
+                                        area = bring.area.toFloat(),
+                                        lumensAmbiente = bring.lumensAmbiente,
+                                        lumensLuminaria = bring.lumensLuminaria,
+                                        lumensTotal = bring.lumensTotal.toFloat(),
+                                        potenciaLuminaria = bring.potenciaLuminaria.toFloat(),
+                                        totalLuminaria = bring.totalLuminaria.toFloat(),
+                                        potenciaTotalLampadas = bring.potenciaTotal.toFloat(),
+                                        amperagemIluminacao = bring.amperagemCircuito.toFloat(),
+                                    ),
+                                    calcular = "iluminacao",
+                                    navController = navController
+                                )
+
+                            }
 
                             composable<HomeGraph.dataUi> { bringData ->
                                 val bring: HomeGraph.dataUi = bringData.toRoute()

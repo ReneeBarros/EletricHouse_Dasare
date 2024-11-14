@@ -15,6 +15,8 @@ fun Navigation(){
 
 sealed class HomeGraph{
 
+
+
     @Serializable
     object Home
 
@@ -26,6 +28,10 @@ sealed class HomeGraph{
 
     @Serializable
     object calcularCabo
+
+    @Serializable
+    object calcularIluminacao
+
 
     @Serializable
     data class dataUi(

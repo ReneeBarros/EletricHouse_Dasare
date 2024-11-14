@@ -566,7 +566,6 @@ class DataFromUiScreen(
                     }
                 }
                 if (iluminacao) {
-
                     UiRequestDataScreenWc(
                         listAmbiente = stringArrayResource( R.array.ListaAmbientes),
                         listPotenciaLamp = stringArrayResource( R.array.ListaLuminaria),
@@ -584,9 +583,6 @@ class DataFromUiScreen(
                         itemselecTensao = uiState.tensao,
                         itemselecLamp = uiState.potenciaLamp.toString(),
                     )
-
-
-
                 }
 
                 if (arcond) {

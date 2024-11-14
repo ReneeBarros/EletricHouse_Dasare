@@ -43,6 +43,7 @@ import com.example.nativeeletrichouse.R
 import com.example.nativeeletrichouse.domain.calcularcabo.CalculadorDeCabo
 import com.example.nativeeletrichouse.domain.calcularcabo.ShowCaboCalculate
 import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
+import com.example.nativeeletrichouse.error.erro_cal_cabo.ErroCalcularCabo
 import com.example.nativeeletrichouse.presation.components.input.InputText
 import com.example.nativeeletrichouse.presation.components.widget.TopBar
 import com.example.nativeeletrichouse.presation.theme.Dimension
@@ -57,8 +58,6 @@ class CalcularCaboScreen(
 ) {
 
     private val stateHolder = CalcularCaboStateHolder()
-
-
 
     @Composable
     fun CalcularCaboUiScreen() {
@@ -82,27 +81,7 @@ class CalcularCaboScreen(
                 FloatingActionButton(
                     onClick = {
 
-                        val errorMessage = when {
-                            uiState.modeloInstalacaoCabos == "Metodo de Instalaçâo" -> "Precisa Informar Metodo de Instalação"
-                            uiState.modeloInstalacaoCabos == "" -> "Precisa Informar Metodo de Instalação"
-                            uiState.quantDeCircuito == "Quantos Circuito?" -> "Precisa informar quantidade de Circuito Agrupado2"
-                            uiState.quantDeCircuito == "Quant.Circuito Agrupado" -> "Precisa informar quantidade de Circuito Agrupado"
-                            uiState.fatoPotencia == 0.0 -> "Precisa informar fator de potencia"
-                            uiState.condutoresCarregado == "" -> "Precisa informar Condutores Carregado"
-                            uiState.condutoresCarregado == "Condutores Carregado" -> "Precisa informar Condutores Carregado1"
-                            uiState.tensao == 0 && uiState.corrente == "0.0" -> "Precisa Informar a Tensão para Calcular a Corrente do Circuito"
-                            uiState.pontecia == "0.0" && uiState.corrente == "0.0" -> "Precisa Informar a Potencia do Circuito para Calcular a Corrente do Circuito"
-                            else -> null
-                        }
-                        if (errorMessage != null) {
-
-                            FancyToast.makeText(context,
-                                errorMessage, FancyToast.LENGTH_SHORT,
-                                FancyToast.WARNING, R.drawable.lampada_acesa,
-                                false
-                            ).show()
-                        }
-                        else {
+                        if (ErroCalcularCabo().erroEntradaDados(uiState = uiState, context = context)) {
 
                             val calCabo = CalculadorDeCabo().calculadarCabos(
                                 correnteEnt = uiState.corrente.replace(",", ".").toDouble(),
@@ -174,7 +153,7 @@ class CalcularCaboScreen(
                         listItem = stringArrayResource(R.array.fator_potencia),
                         itemSelecionado = uiState.tensao.toString(),
                         selecionandoItens = { stateHolder.setFatoPotencia(it.toDouble()) },
-                        label = "Tensão",
+                        label = "Fator Potencia",
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = 5.dp)
@@ -304,7 +283,7 @@ class CalcularCaboScreen(
             "Fator de Potencia: ",
             "Metodo de Instalação: ",
             "Condutor Carregado: ",
-            "Quantidade De Circuito: ",
+            "Quant. De Circuito Agrupado: ",
             "Cabo Calculado (mm²): ",
             "Corrente de Cabo (A): "
 

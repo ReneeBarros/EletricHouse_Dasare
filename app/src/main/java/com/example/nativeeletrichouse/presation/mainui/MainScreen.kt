@@ -281,16 +281,8 @@ class MainScreen {
                                        {
                                            stateHolderHome.setIluminacao(uiStateHome.iluminacao)
                                            navController.navigate(
-                                               HomeGraph.dataUi(
-                                               ilum = true,
-                                               tom = uiStateHome.tomada,
-                                               ac = uiStateHome.arCondicionado,
-                                               home = false,
-                                               ambiente = uiStateHome.ambiente,
-                                               nomeAmbiente = uiStateHome.nomeObra
+                                               HomeGraph.calcularIluminacao
                                            )
-                                           )
-
                                        },
                                        uiStateHome.iluminacao, title = "Calcular Iluminação"
                                    )

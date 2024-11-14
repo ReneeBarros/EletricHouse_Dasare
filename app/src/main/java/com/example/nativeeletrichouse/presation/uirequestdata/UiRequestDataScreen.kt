@@ -328,7 +328,7 @@ fun UiRequestDataScreenWc(
         )
         InputText(
             label = "Nome do Ambiente",
-            onvalueChange = onValueChangeNomeAmbiente,
+            onvalueChange = { onValueChangeNomeAmbiente(it) },
             value = valueNomeAmbiente
 
         )
@@ -343,7 +343,7 @@ fun UiRequestDataScreenWc(
                     .weight(1f)
                     .padding(end = 5.dp),
                 label = "Largura",
-                onvalueChange = onValueChangeLargura,
+                onvalueChange = { onValueChangeLargura(it) },
                 keyboardType = KeyboardType.Number,
                 value = valueLargura
 
@@ -353,7 +353,7 @@ fun UiRequestDataScreenWc(
                     .weight(1f)
                     .padding(start = 5.dp),
                 label = "Comprimento",
-                onvalueChange = onValueChangeComp,
+                onvalueChange = { onValueChangeComp(it) },
                 keyboardType = KeyboardType.Number,
                 value = valuecomp
             )
