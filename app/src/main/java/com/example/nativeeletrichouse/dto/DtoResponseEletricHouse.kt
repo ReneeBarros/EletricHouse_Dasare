@@ -34,23 +34,25 @@ sealed class DtoResponseEletricHouse{
         val amperagemTomada:Double=0.0
     )
 
+    @Serializable
     data class DtoArCond(
-        val id:Int?=0,
-        val largura:Double?=0.0,
-        val comprimento:Double?=0.0,
-        val tensao:Int?=0,
-        val area:Float? =0.0f,
-        val ambiente:String="",
-        val quantPessoasAmbiente:Int?=0,
-        val quantEletrodomestico:Int?=0,
-        val btuPorM2:Int?=0,
-        val btuAdicionalPorPessoa:Int?=0,
-        val btuAdicionalPorEletronico:Int?=0,
-        val btuAdicionalInsidenciaRaioSolar:Int?=0,
-        val btusTotal:Int?=0,
-        val IDRS:Double?=0.0,
-        val potenciaEletria:String?="",
-        val amperagemCircuitoAc:String?="",
+        var largura:Float?=0.0f,
+        var comprimento:Float?=0.0f,
+        var tensao:Int?=0,
+        var area:Float? =0.0f,
+        var ambiente:String="",
+        var nomeAmbiente:String="",
+        var quantPessoasAmbiente:Int?=0,
+        var quantEletrodomestico:Int?=0,
+        var btuPorM2:Int?=0,
+        var btuAdicionalPorPessoa:Int?=0,
+        var btuAdicionalPorEletronico:Int?=0,
+        var btuAdicionalInsidenciaRaioSolar:Int?=0,
+        var btusTotal:Int?=0,
+        var IDRS:Float?=0.0f,
+        var potenciaEletria:String?="",
+        var amperagemCircuitoAc:String?="",
+        var caboArCond:Float?=0.0f,
     )
 
     data class EletricHouseComplete(

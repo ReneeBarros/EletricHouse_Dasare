@@ -25,7 +25,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -294,7 +293,7 @@ class DataFromUiScreen(
 
                                         )
                                         scope.launch {
-                                            val responseApi = ApiEletricHouse().apiIArCond(request)
+                                            val responseApi = ApiEletricHouse().apiArCond(request)
 
                                             navController.navigate(
                                                 HomeGraph.ShowResultData(

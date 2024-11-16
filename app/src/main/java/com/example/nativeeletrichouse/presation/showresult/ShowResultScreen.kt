@@ -224,7 +224,8 @@ class ShowResultScreen {
                             }
                         }
                     }
-                } else if (calcular == "iluminacao") {
+                }
+                else if (calcular == "iluminacao") {
                     listItem = listOf(
                         "ID:",
                         "Ambiente:",
@@ -264,7 +265,8 @@ class ShowResultScreen {
                             }
                         }
                     }
-                } else if (calcular == "tomada") {
+                }
+                else if (calcular == "tomada") {
                     listItem = listOf(
                         "ID:",
                         "Ambiente:",
@@ -300,10 +302,12 @@ class ShowResultScreen {
                             }
                         }
                     }
-                } else if (calcular == "arCond") {
+                }
+                else if (calcular == "arCond") {
                     listItem = listOf(
                         "ID:",
                         "Ambiente:",
+                        "Nome Ambiente:",
                         "Largura:",
                         "Comp:",
                         "Tensão:",
@@ -317,7 +321,8 @@ class ShowResultScreen {
                         "btusTotal:",
                         "IDRS:",
                         "(W)Arcond:",
-                        "(A)Arcond:"
+                        "(A)Arcond:",
+                        "CAbo Eletrico:"
                     )
                     Column(
                         modifier = Modifier

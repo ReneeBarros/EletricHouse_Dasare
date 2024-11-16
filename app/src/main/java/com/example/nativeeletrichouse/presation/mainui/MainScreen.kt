@@ -49,6 +49,7 @@ import com.example.nativeeletrichouse.R
 import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
+import com.example.nativeeletrichouse.presation.arcondicionado.CalcularArCondicionadoScreen
 import com.example.nativeeletrichouse.presation.components.CardItem
 import com.example.nativeeletrichouse.presation.home.HomeStateHolder
 import com.example.nativeeletrichouse.viewmodel.ViewModelAmbiente
@@ -316,14 +317,8 @@ class MainScreen {
                                        description ="arCondicionado",
                                        {
                                            stateHolderHome.setArCondicionado(uiStateHome.arCondicionado)
-                                           navController.navigate(HomeGraph.dataUi(
-                                               ilum = false,
-                                               tom = false,
-                                               ac = true,
-                                               home = false,
-                                               ambiente = uiStateHome.ambiente,
-                                               nomeAmbiente = uiStateHome.nomeObra
-                                           )
+                                           navController.navigate(
+                                               HomeGraph.calcularArCondicionado
                                            )
                                        },
                                        uiStateHome.arCondicionado,

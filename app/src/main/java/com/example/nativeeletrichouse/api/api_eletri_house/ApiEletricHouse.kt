@@ -1,13 +1,11 @@
 package com.example.nativeeletrichouse.api.api_eletri_house
 
-import android.annotation.SuppressLint
 import androidx.compose.ui.platform.LocalContext
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoArCond
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoIluminacao
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoTomada
 import com.example.nativeeletrichouse.data.request.RequestCalculateAmbiente
-import com.example.nativeeletrichouse.error.handleUnresolvedAddressException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -19,8 +17,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import java.io.IOException
-import java.nio.channels.UnresolvedAddressException
 
 class ApiEletricHouse {
 
@@ -67,7 +63,7 @@ class ApiEletricHouse {
         return responseTomada.body()
     }
 
-    suspend fun apiIArCond(
+    suspend fun apiArCond(
         requestArCond: Any
     ):ResponseCalculoArCond{
         val urlArCond = "api/v1/eletrichouse/calculararcondicionado"
@@ -103,6 +99,7 @@ class ApiEletricHouse {
             contentType(ContentType.Application.Json)
             setBody(requestCalAmbiente)
         }
+
         return responseAmbiente.body<List<ResponseCaculateAmbiente>>()
     }
 }

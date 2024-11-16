@@ -1,9 +1,9 @@
 package com.example.nativeeletrichouse.domain.caculador_iluminacao
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.navigation.NavController
 import com.example.nativeeletrichouse.api.api_eletri_house.ApiEletricHouse
-import com.example.nativeeletrichouse.data.reponse.ResponseCalculoIluminacao
 import com.example.nativeeletrichouse.data.request.RequestCalculateIluminacao
 import com.example.nativeeletrichouse.main.core.navigation.navgation_ilumnacao.NavegationIlum
 import com.example.nativeeletrichouse.presation.iluminacao.CalcularIluminacaoUiState
@@ -13,14 +13,15 @@ import kotlinx.coroutines.launch
 
 class CalcularIluminacao {
 
+    @SuppressLint("SuspiciousIndentation")
     fun calculadorIluminacao(
         uiState: CalcularIluminacaoUiState,
         context: Context,
         scope: CoroutineScope,
         navController: NavController
 
-    ): ResponseCalculoIluminacao {
-        var responseApi = ResponseCalculoIluminacao()
+    ){
+        //var responseApi = ResponseCalculoIluminacao()
 
 
         val request = RequestCalculateIluminacao(
@@ -31,13 +32,11 @@ class CalcularIluminacao {
             tensao = uiState.voltage
         )
 
-
-
         scope.launch {
 
             try {
 
-                responseApi = ApiEletricHouse().apiIluminacao(request)
+              val responseApi = ApiEletricHouse().apiIluminacao(request)
 
                 NavegationIlum().navigationIlum(
                     navController = navController,
@@ -53,10 +52,7 @@ class CalcularIluminacao {
                     false
 
                 )
-
             }
         }
-
-        return responseApi
     }
 }

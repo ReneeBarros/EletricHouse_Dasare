@@ -32,6 +32,9 @@ sealed class HomeGraph{
     @Serializable
     object calcularIluminacao
 
+    @Serializable
+    object calcularArCondicionado
+
 
     @Serializable
     data class dataUi(
@@ -76,6 +79,6 @@ sealed class HomeGraph{
         val amperagemCircuitoAc:String?="",
         val calcular: String="ambiente"
 
-        )
+    )
 
 }

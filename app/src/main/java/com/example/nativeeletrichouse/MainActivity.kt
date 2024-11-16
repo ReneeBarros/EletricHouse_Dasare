@@ -24,6 +24,8 @@ import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboE
 import com.example.nativeeletrichouse.dto.DtoResponseEletricHouse
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
 import com.example.nativeeletrichouse.maper.MapperResponseApiToResponseUi
+import com.example.nativeeletrichouse.presation.arcondicionado.CalcularArCondicionadoScreen
+import com.example.nativeeletrichouse.presation.arcondicionado.ShowResultArcondScreen
 import com.example.nativeeletrichouse.presation.calcularcabo.CalcularCaboScreen
 import com.example.nativeeletrichouse.presation.getData.DataFromUiScreen
 import com.example.nativeeletrichouse.presation.iluminacao.CalcularIluminacaoScreen
@@ -58,6 +60,7 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             startDestination = HomeGraph.Home
                         ){
+
                             composable<HomeGraph.Home> {
                                 MainScreen().MainScreenCore(
                                 navController = navController,
@@ -70,7 +73,6 @@ class MainActivity : ComponentActivity() {
                                         navController = navController,
                                         caboCalculator = caboEletricoInterFace
                                     ).CalcularCaboUiScreen()
-
                             }
 
                             composable<HomeGraph.placaSolar> {
@@ -78,11 +80,29 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 )
                             }
+
                             composable<HomeGraph.calcularIluminacao> {
                                 CalcularIluminacaoScreen().CalcularIluminacaoUiScreen(
                                     navController = navController, context = context
                                 )
                             }
+
+                            composable<HomeGraph.calcularArCondicionado> {
+                                CalcularArCondicionadoScreen().CalcularArCondicionadoUiScreen(
+                                    navController = navController,
+                                    context = context
+                                )
+                            }
+
+                            composable<DtoResponseEletricHouse.DtoArCond> {
+                                    bringData ->
+                                val bring: DtoResponseEletricHouse.DtoArCond = bringData.toRoute()
+                                ShowResultArcondScreen(
+                                    navController = navController,
+                                    toResultScreen = bring
+                                )
+                            }
+
 
                             composable<ResponseCalculoIluminacao> {
                                     bringData ->
@@ -91,17 +111,17 @@ class MainActivity : ComponentActivity() {
                                     DtoResponseEletricHouse.EletricHouseComplete(
                                         id = 0,
                                         ambiente = bring.ambiente,
-                                        largura = bring.largura.toFloat(),
-                                        comprimento = bring.comprimento.toFloat(),
+                                        largura = bring.largura,
+                                        comprimento = bring.comprimento,
                                         tensao = bring.tensao,
                                         area = bring.area.toFloat(),
                                         lumensAmbiente = bring.lumensAmbiente,
                                         lumensLuminaria = bring.lumensLuminaria,
-                                        lumensTotal = bring.lumensTotal.toFloat(),
-                                        potenciaLuminaria = bring.potenciaLuminaria.toFloat(),
-                                        totalLuminaria = bring.totalLuminaria.toFloat(),
-                                        potenciaTotalLampadas = bring.potenciaTotal.toFloat(),
-                                        amperagemIluminacao = bring.amperagemCircuito.toFloat(),
+                                        lumensTotal = bring.lumensTotal,
+                                        potenciaLuminaria = bring.potenciaLuminaria,
+                                        totalLuminaria = bring.totalLuminaria,
+                                        potenciaTotalLampadas = bring.potenciaTotal,
+                                        amperagemIluminacao = bring.amperagemCircuito,
                                     ),
                                     calcular = "iluminacao",
                                     navController = navController

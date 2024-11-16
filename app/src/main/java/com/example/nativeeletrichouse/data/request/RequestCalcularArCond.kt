@@ -9,5 +9,6 @@ data class RequestCalcularArCond(
     val largura: Double,
     val quantEletrodomestico: Int,
     val quantPessoasAmbiente: Int,
-    val tensao: Int
+    val tensao: Int,
+    val ambiente:String = ""
 )

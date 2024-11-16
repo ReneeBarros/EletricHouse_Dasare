@@ -10,7 +10,9 @@ class NavegationIlum(){
         lampadaCaculada: ResponseCalculoIluminacao
     ){
         navController.navigate(
-            ResponseCalculoIluminacao(
+            lampadaCaculada
+
+/*            ResponseCalculoIluminacao(
                 ambiente = lampadaCaculada.ambiente,
                 nomeAmbiente = lampadaCaculada.nomeAmbiente,
                 largura = lampadaCaculada.largura,
@@ -24,9 +26,8 @@ class NavegationIlum(){
                 totalLuminaria = lampadaCaculada.totalLuminaria,
                 potenciaTotal = lampadaCaculada.potenciaTotal,
                 amperagemCircuito =lampadaCaculada.amperagemCircuito
-            )
+            )*/
         )
-
     }
 }
 
