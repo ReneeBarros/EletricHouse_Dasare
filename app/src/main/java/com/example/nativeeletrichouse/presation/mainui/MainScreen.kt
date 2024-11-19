@@ -52,6 +52,7 @@ import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
 import com.example.nativeeletrichouse.presation.arcondicionado.CalcularArCondicionadoScreen
 import com.example.nativeeletrichouse.presation.components.CardItem
 import com.example.nativeeletrichouse.presation.home.HomeStateHolder
+import com.example.nativeeletrichouse.presation.tomada.CalcularTomadaScreen
 import com.example.nativeeletrichouse.viewmodel.ViewModelAmbiente
 import kotlinx.serialization.json.Json
 
@@ -291,15 +292,7 @@ class MainScreen {
                                    CardItem(img = R.drawable.tomada, description ="Tomada",
                                        {
                                            stateHolderHome.setTomada(uiStateHome.tomada)
-                                           navController.navigate(HomeGraph.dataUi(
-                                               ilum = false,
-                                               tom = true,
-                                               ac = false,
-                                               home = false,
-                                               ambiente = uiStateHome.ambiente,
-                                               nomeAmbiente = uiStateHome.nomeObra,
-                                               calcular = "tomada"
-                                           ))
+                                           navController.navigate(HomeGraph.calcularTomada)
                                        },
                                        uiStateHome.tomada,
                                        title = "Calcular Tomada"

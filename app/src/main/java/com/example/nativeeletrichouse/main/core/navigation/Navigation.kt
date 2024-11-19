@@ -35,6 +35,9 @@ sealed class HomeGraph{
     @Serializable
     object calcularArCondicionado
 
+    @Serializable
+    object calcularTomada
+
 
     @Serializable
     data class dataUi(

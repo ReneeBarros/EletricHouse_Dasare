@@ -12,6 +12,9 @@ data class CalcularCaboUiState(
     val modeloInstalacaoCabos:String="",
     val condutoresCarregado:String="",
     val quantDeCircuito:String="Quantos Circuito?",
+    val distanciaCAbo:String="0.0",
+    val temperatura:String="0.0",
+    val quedaTensao:String="0.0",
     val listCabo:MutableList<ShowCaboCalculate> = mutableListOf()
 
 )

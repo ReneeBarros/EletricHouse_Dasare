@@ -11,11 +11,19 @@ class CalculoCaboEletricoImp(): CalculoCaboEletricoInterFace  {
         tensao: Int,
         potencia: Double,
         corrente: Double,
-        fatoPotencia: Double
+        fatoPotencia: Double,
+
     ): Double {
+
+
+
+
         val amp = corrente
         val correnteCalculada = String.format("%.1f",(potencia / (tensao*fatoPotencia)))
+
         return if(amp != 0.0) amp else (correnteCalculada.replace(",",".").toDouble())
+
+
     }
 
     override fun modeloInstalacaoDosCabos(modelo: String): String {
@@ -143,8 +151,6 @@ class CalculoCaboEletricoImp(): CalculoCaboEletricoInterFace  {
             )
             getCabo = B1_3[calculatedCurrent]?:0.4
             correnteDoCabo = calculatedCurrent
-
-
         }
 
         return getCabo
@@ -155,7 +161,31 @@ class CalculoCaboEletricoImp(): CalculoCaboEletricoInterFace  {
         return (correnteDoCabo * indiceAgrupamento)
     }
 
+    override fun calculoCircuitoTrifasico(
+        tensao: Int,
+        potencia: Double,
+        corrente: Double,
+        fatoPotencia: Double,
+        distancia:Double,
+        quedaTensao:Double
+    ):Double{
+        val  raizDeTres = 1.73
+        // corrente tifasica
+        val corr = (potencia /(raizDeTres*tensao*fatoPotencia))
+        var seccaoCabo:Double
+
+        if(corrente != 0.0) {
+            seccaoCabo= ((corrente * (distancia * raizDeTres))/(58 * (quedaTensao*tensao)))
+        }
+        else {
+            seccaoCabo = ((corr * (distancia * raizDeTres)) / (58 * (quedaTensao*tensao)))
+        }
+
+        return seccaoCabo
+    }
+
 }
+
 
 @SuppressLint("DefaultLocale")
 fun main(){

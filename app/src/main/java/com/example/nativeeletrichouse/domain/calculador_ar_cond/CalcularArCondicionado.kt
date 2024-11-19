@@ -3,7 +3,6 @@ package com.example.nativeeletrichouse.domain.calculador_ar_cond
 import android.content.Context
 import androidx.navigation.NavController
 import com.example.nativeeletrichouse.api.api_eletri_house.ApiEletricHouse
-import com.example.nativeeletrichouse.data.reponse.ResponseCalculoArCond
 import com.example.nativeeletrichouse.data.request.RequestCalcularArCond
 import com.example.nativeeletrichouse.main.core.navigation.navigation_arcond.NavigationArCond
 import com.example.nativeeletrichouse.maper.responsefromApiAcToResultScreenAC
@@ -33,8 +32,6 @@ class CalcularArCondicionado {
 
 
         scope.launch {
-            //val responseApi =
-
             val ac =responsefromApiAcToResultScreenAC(
                 uiState = uiState,
                 fromApi = ApiEletricHouse().apiArCond(request)
@@ -46,9 +43,5 @@ class CalcularArCondicionado {
             )
 
         }
-
-
-
-
     }
 }

@@ -62,4 +62,27 @@ class CalcularCaboStateHolder {
             )
         }
     }
+
+    fun setDistancia(value: String){
+        _uistate.update { currentState->
+            currentState.copy(
+                distanciaCAbo = value
+            )
+        }
+    }
+    fun setTemperatura(value: String){
+        _uistate.update { currentState->
+            currentState.copy(
+                temperatura = value
+            )
+        }
+    }
+
+    fun setQuedaTensao(value: String){
+        _uistate.update { currentState->
+            currentState.copy(
+                quedaTensao = value
+            )
+        }
+    }
 }

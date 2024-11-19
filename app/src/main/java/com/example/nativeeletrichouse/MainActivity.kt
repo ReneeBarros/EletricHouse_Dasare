@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.toRoute
+import com.example.nativeeletrichouse.api.api_eletri_house.ApiEletricHouse
 import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
 import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoIluminacao
@@ -32,6 +33,8 @@ import com.example.nativeeletrichouse.presation.iluminacao.CalcularIluminacaoScr
 import com.example.nativeeletrichouse.presation.mainui.MainScreen
 import com.example.nativeeletrichouse.presation.showresult.ShowResultScreen
 import com.example.nativeeletrichouse.presation.solar.SystemSolarScreen
+import com.example.nativeeletrichouse.presation.tomada.CalcularTomadaScreen
+import com.example.nativeeletrichouse.presation.tomada.ShowResultTomadaScreen
 import com.example.nativeeletrichouse.ui.theme.NativeEletrichouseTheme
 import com.example.nativeeletrichouse.viewmodel.ViewModelAmbiente
 import kotlinx.serialization.json.Json
@@ -55,6 +58,7 @@ class MainActivity : ComponentActivity() {
                         val viewModelAmbiente = koinViewModel<ViewModelAmbiente>()
                         val caboEletricoInterFace: CalculoCaboEletricoInterFace by inject()
                         val context = LocalContext.current
+                        val api : ApiEletricHouse by inject()
 
                         NavHost(
                             navController = navController,
@@ -94,6 +98,14 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
+                            composable<HomeGraph.calcularTomada> {
+                               CalcularTomadaScreen().CalcularTomadaUiScreen(
+                                   navController = navController,
+                                   context = context,
+                                   api = api
+                               )
+                            }
+
                             composable<DtoResponseEletricHouse.DtoArCond> {
                                     bringData ->
                                 val bring: DtoResponseEletricHouse.DtoArCond = bringData.toRoute()
@@ -101,6 +113,16 @@ class MainActivity : ComponentActivity() {
                                     navController = navController,
                                     toResultScreen = bring
                                 )
+                            }
+
+                            composable<DtoResponseEletricHouse.DtoTomada> {
+                                    bringData ->
+                                val bring: DtoResponseEletricHouse.DtoTomada = bringData.toRoute()
+                               ShowResultTomadaScreen(
+                                   navController = navController,
+                                   toResultScreen = bring,
+
+                               )
                             }
 
 

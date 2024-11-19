@@ -22,16 +22,18 @@ sealed class DtoResponseEletricHouse{
         val amperagemIluminacao:Double =0.0
     ){}
 
+    @Serializable
     data class DtoTomada(
-        val id:Int?=0,
-        val largura:Double?=0.0,
-        val comprimento:Double?=0.0,
+        val largura:Float?=0.0f,
+        val comprimento:Float?=0.0f,
         val tensao:Int?=0,
-        val area:Float? =0.0f,
+        val perimetro:Float? =0.0f,
         val ambiente:String="",
         val quantToamda:Int?=0,
-        val potenciaTotalTomada: Double=0.0,
-        val amperagemTomada:Double=0.0
+        val potenciaTotalTomada: Float=0.0f,
+        val amperagemTomada:Float=0.0f,
+        val nomeAmbiente: String="",
+        val caboToTomada:Float =2.5f
     )
 
     @Serializable

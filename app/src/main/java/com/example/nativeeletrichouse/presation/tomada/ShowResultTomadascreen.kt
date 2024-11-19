@@ -1,4 +1,4 @@
-package com.example.nativeeletrichouse.presation.arcondicionado
+package com.example.nativeeletrichouse.presation.tomada
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,9 +21,9 @@ import com.example.nativeeletrichouse.dto.DtoResponseEletricHouse
 import com.example.nativeeletrichouse.presation.components.widget.TopBar
 
 @Composable
-fun ShowResultArcondScreen(
+fun ShowResultTomadaScreen(
     navController: NavController,
-    toResultScreen:DtoResponseEletricHouse.DtoArCond
+    toResultScreen: DtoResponseEletricHouse.DtoTomada
 
 ) {
     Scaffold(
@@ -41,26 +41,18 @@ fun ShowResultArcondScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
 
-
-
             val listToShowResult = listOf(
                 toResultScreen.ambiente,
                 toResultScreen.nomeAmbiente,
                 "${toResultScreen.largura}",
                 "${toResultScreen.comprimento}",
                 "${toResultScreen.tensao}",
-                "${toResultScreen.area}",
-                "${toResultScreen.btuPorM2}",
-                "${toResultScreen.quantPessoasAmbiente}",
-                "${toResultScreen.quantEletrodomestico}",
-                "${toResultScreen.btuAdicionalPorPessoa}",
-                "${toResultScreen.btuAdicionalPorEletronico}",
-                "${toResultScreen.btuAdicionalInsidenciaRaioSolar}",
-                "${toResultScreen.btusTotal}",
-                "${toResultScreen.IDRS}",
-                "${toResultScreen.potenciaEletria}",
-                "${toResultScreen.amperagemCircuitoAc}",
-                "${toResultScreen.caboArCond}",
+                "${toResultScreen.perimetro}",
+                "${toResultScreen.quantToamda}",
+                "${toResultScreen.potenciaTotalTomada}",
+                "${toResultScreen.amperagemTomada}",
+                "${toResultScreen.caboToTomada}",
+
             )
             val listItem = listOf(
 
@@ -69,18 +61,11 @@ fun ShowResultArcondScreen(
                 "Largura:",
                 "Comp:",
                 "Tensão:",
-                "Area:",
-                "btusM²:",
-                "QuantPessoa no Ambiente:",
-                "QuantEletronico no Ambiente:",
-                "btusAdicionalPessoa:",
-                "btusAdicionaleletronico:",
-                "btusAdicionalIndSolar:",
-                "btusTotal:",
-                "IDRS:",
-                "(W)Arcond:",
-                "(A)Arcond:",
-                "CAbo Eletrico:"
+                "Perimetro:",
+                "Quant Tomada:",
+                "(W)Tomada:",
+                "(A)Tomada:",
+                "CAbo Eletrico p/ Tomada:"
             )
 
             Column(
@@ -109,12 +94,5 @@ fun ShowResultArcondScreen(
                 }
             }
         }
-
-
-        }
-
-
-
-
-
+    }
 }

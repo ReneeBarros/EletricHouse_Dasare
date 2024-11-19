@@ -26,5 +26,6 @@ interface CalculoCaboEletricoInterFace {
     fun quantCircuitosNoEletroduto(value:String):Double?
     fun encontrarCaboCalculado(tabelaIndice: String, correnteCorrigida:Double, qtdeCondutorCarregado:Int):Double
     fun correnteDoCaboSuportado(indiceAgrupamento: Double): Double
+    fun calculoCircuitoTrifasico( tensao: Int,potencia: Double,corrente: Double,fatoPotencia: Double,distancia:Double,quedaTensao:Double):Double
 
 }

@@ -8,8 +8,6 @@ import com.shashank.sony.fancytoastlib.FancyToast
 
 class ErroCalcularCabo{
 
-
-
     fun erroEntradaDados(
         uiState: CalcularCaboUiState,
         context: Context):Boolean {
@@ -26,6 +24,8 @@ class ErroCalcularCabo{
             uiState.pontecia == "0.0" && uiState.corrente == "0.0" -> "Precisa Informar a Potencia do Circuito para Calcular a Corrente do Circuito"
             else -> null
         }
+
+
         if (errorMessage != null) {
             FancyToast.makeText(context,
                 errorMessage, FancyToast.LENGTH_SHORT,

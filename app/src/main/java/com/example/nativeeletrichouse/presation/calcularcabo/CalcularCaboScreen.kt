@@ -53,7 +53,7 @@ import com.shashank.sony.fancytoastlib.FancyToast
 @OptIn(ExperimentalMaterial3Api::class)
 class CalcularCaboScreen(
 
-    private val caboCalculator:CalculoCaboEletricoInterFace,
+    private val caboCalculator: CalculoCaboEletricoInterFace,
     private val navController: NavController
 ) {
 
@@ -73,15 +73,27 @@ class CalcularCaboScreen(
         Scaffold(
             topBar = {
 
-                TopBar(" Calcular Cabo Eletrico", Modifier, navController = navController,20.sp)
-               // TopAppBar(title = { Text(text=" Calcular Cabo Eletrico") })
+                TopBar(" Calcular Cabo Eletrico", Modifier, navController = navController, 20.sp)
+                // TopAppBar(title = { Text(text=" Calcular Cabo Eletrico") })
             },
 
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
 
-                        if (ErroCalcularCabo().erroEntradaDados(uiState = uiState, context = context)) {
+                        if (ErroCalcularCabo().erroEntradaDados(
+                                uiState = uiState,
+                                context = context
+                            )
+                        ) {
+                            val quedaTensao =when{
+                                uiState.quedaTensao=="7%"->0.07
+                                uiState.quedaTensao=="6%"->0.06
+                                uiState.quedaTensao=="5%"->0.05
+                                uiState.quedaTensao=="4%"->0.04
+                                uiState.quedaTensao=="3%"->0.03
+                                else -> {0.01}
+                            }
 
                             val calCabo = CalculadorDeCabo().calculadarCabos(
                                 correnteEnt = uiState.corrente.replace(",", ".").toDouble(),
@@ -91,12 +103,17 @@ class CalcularCaboScreen(
                                 modeloInstalacaoCabos = uiState.modeloInstalacaoCabos,
                                 condutoresCarregado = uiState.condutoresCarregado,
                                 quantDeCircuito = uiState.quantDeCircuito,
-                                calculoCabo = caboCalculator
+                                calculoCabo = caboCalculator,
+                                temperatura = uiState.temperatura.replace(",", ".").toDouble(),
+                                quedaTensao = quedaTensao,
+                                distancia = uiState.distanciaCAbo.replace(",", ".").toDouble()
                             )
 
                             items.add(calCabo)
-                            FancyToast.makeText(context,"Cabo Calculado",
-                                FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show()
+                            FancyToast.makeText(
+                                context, "Cabo Calculado",
+                                FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false
+                            ).show()
                             listChecked = true
                         }
                     },
@@ -104,14 +121,16 @@ class CalcularCaboScreen(
                         .size(75.dp, 70.dp),
                     containerColor = Color.White,
 
-                ) {
+                    ) {
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        Icon(painter = painterResource(id = R.drawable.calculadora_icon),
-                            contentDescription ="", modifier = Modifier.size(25.dp))
+                        Icon(
+                            painter = painterResource(id = R.drawable.calculadora_icon),
+                            contentDescription = "", modifier = Modifier.size(25.dp)
+                        )
                         Text(text = "Calcular")
                     }
 
@@ -120,11 +139,12 @@ class CalcularCaboScreen(
 
             floatingActionButtonPosition = FabPosition.Center,
 
-
-        ){paddingValues ->
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
+            )
+        { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -138,7 +158,7 @@ class CalcularCaboScreen(
 
                     //lista tensão 220 ou 110
                     Requestdatascreen(
-                        listItem = stringArrayResource(R.array.Tensao),
+                        listItem = stringArrayResource(R.array.TensaoParaCalCabo),
                         itemSelecionado = uiState.tensao.toString(),
                         selecionandoItens = {
                             stateHolder.setTensao(it.toInt())
@@ -172,7 +192,7 @@ class CalcularCaboScreen(
                             .weight(1f)
                             .padding(end = 5.dp),
                         label = "Potencia",
-                        onvalueChange = {stateHolder.setPotencia(it)},
+                        onvalueChange = { stateHolder.setPotencia(it) },
                         keyboardType = KeyboardType.Number,
                         value = uiState.pontecia
                     )
@@ -180,12 +200,23 @@ class CalcularCaboScreen(
                     InputText(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(start = 5.dp),
+                            .padding(start = 5.dp, end = 5.dp),
                         label = " Se tiver Corrente",
-                        onvalueChange = {stateHolder.setCorrente(it)},
+                        onvalueChange = { stateHolder.setCorrente(it) },
                         keyboardType = KeyboardType.Number,
                         value = uiState.corrente
                     )
+
+                    InputText(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 5.dp),
+                        label = "Dist. Condutor (m)",
+                        onvalueChange = { stateHolder.setDistancia(it) },
+                        keyboardType = KeyboardType.Number,
+                        value = uiState.distanciaCAbo
+                    )
+
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -193,50 +224,84 @@ class CalcularCaboScreen(
                 Requestdatascreen(
                     listItem = stringArrayResource(R.array.modeloInstalacaoDosCabos),
                     itemSelecionado = uiState.modeloInstalacaoCabos,
-                    selecionandoItens = {stateHolder.setModeloInstCabo(it) },
+                    selecionandoItens = { stateHolder.setModeloInstCabo(it) },
                     label = "Modelo Instalação",
                     modifier = Modifier.height(70.dp)
                 )
+
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    //lista Potencia lampada
+                    //lista condutor carregado
                     Requestdatascreen(
                         listItem = stringArrayResource(R.array.condutoresCarregado),
-                        itemSelecionado =uiState.condutoresCarregado,
-                        selecionandoItens ={stateHolder.setCondutoresCarregado(it)} ,
+                        itemSelecionado = uiState.condutoresCarregado,
+                        selecionandoItens = { stateHolder.setCondutoresCarregado(it) },
                         label = "Condutores Carregado",
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 5.dp)
                         //.height(60.dp)
+
+
                     )
 
                     Requestdatascreen(
-                        listItem = stringArrayResource(R.array.quantCircuitosNoEletroduto),
-                        itemSelecionado =uiState.quantDeCircuito,
-                        selecionandoItens ={ stateHolder.setQuantCircuito(it) } ,
-                        label = "Quant Circuito ?",
+                        listItem = stringArrayResource(R.array.Temperatura_Amb),
+                        itemSelecionado = uiState.quantDeCircuito,
+                        selecionandoItens = { stateHolder.setTemperatura(it) },
+                        label = "Tenperatura Ambiente",
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = 5.dp)
                         // .height(60.dp)
                     )
                 }
+
                 Spacer(modifier = Modifier.height(20.dp))
 
-                if (listChecked){
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    Requestdatascreen(
+                        listItem = stringArrayResource(R.array.quantCircuitosNoEletroduto),
+                        itemSelecionado = uiState.quantDeCircuito,
+                        selecionandoItens = { stateHolder.setQuantCircuito(it) },
+                        label = "Quant Circuito ?",
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 5.dp)
+                        // .height(60.dp)
+                    )
+                    //queda de tensão
+                    Requestdatascreen(
+                        listItem = stringArrayResource(R.array.quedaTensao),
+                        itemSelecionado = uiState.quantDeCircuito,
+                        selecionandoItens = { stateHolder.setQuedaTensao(it) },
+                        label = "Queda de Tensão Adimisivel?",
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start= 5.dp)
+                        // .height(60.dp)
+                    )
+
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                if (listChecked) {
 
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(260.dp)
-                            , colors = CardDefaults.cardColors(
-                                containerColor = Color.White
-                            ),
+                            .height(260.dp), colors = CardDefaults.cardColors(
+                            containerColor = Color.White
+                        ),
                         border = BorderStroke(1.dp, color = Color.LightGray)
                     ) {
                         LazyColumn(Modifier.fillMaxSize()) {
@@ -245,15 +310,19 @@ class CalcularCaboScreen(
                             ) { cabo ->
                                 Spacer(modifier = Modifier.height(Dimension.small))
                                 ShowCabo(
-                                    tensao=cabo.tensao,
-                                    potencia=cabo.pontecia,
-                                    corrente=cabo.corrente,
-                                    fatorDePotencia=cabo.fatoPotencia,
-                                    metodoDeInstalação=cabo.modeloInstalacaoCabos,
-                                    condutorCarregado=cabo.condutoresCarregado,
-                                    quantidadeDeCircuito=cabo.quantDeCircuito,
-                                    caboCalculado=cabo.caboCalculado,
-                                    correnteDeSuporteCabo = cabo.correnteSuportadoPeloCabo
+                                    tensao = cabo.tensao,
+                                    potencia = cabo.pontecia,
+                                    corrente = cabo.corrente,
+                                    fatorDePotencia = cabo.fatoPotencia,
+                                    metodoDeInstalação = cabo.modeloInstalacaoCabos,
+                                    condutorCarregado = cabo.condutoresCarregado,
+                                    quantidadeDeCircuito = cabo.quantDeCircuito,
+                                    caboCalculado = cabo.caboCalculado,
+                                    correnteDeSuporteCabo = cabo.correnteSuportadoPeloCabo,
+                                    temperatura = cabo.temperatura,
+                                    quedaTensao = cabo.quedaTensao,
+                                    distancia = cabo.distancia,
+                                    seccaoCaboTrifasico = cabo.seccaoCaboTrifasico
                                 )
                             }
                         }
@@ -265,17 +334,22 @@ class CalcularCaboScreen(
 
     @Composable
     private fun ShowCabo(
-        tensao:Int,
-        potencia:Double,
-        corrente:Double,
-        fatorDePotencia:Double,
+        tensao: Int,
+        potencia: Double,
+        corrente: Double,
+        fatorDePotencia: Double,
         metodoDeInstalação: String,
         condutorCarregado: Int,
-        quantidadeDeCircuito:Int,
+        quantidadeDeCircuito: Int,
         caboCalculado: Double,
-        correnteDeSuporteCabo: Double
+        correnteDeSuporteCabo: Double,
+        temperatura: Double,
+        quedaTensao: Double,
+        distancia: Double,
+        seccaoCaboTrifasico: Double
 
-    ){
+
+    ) {
         val listItem = listOf(
             "Tensão: ",
             "Potencia: ",
@@ -285,8 +359,11 @@ class CalcularCaboScreen(
             "Condutor Carregado: ",
             "Quant. De Circuito Agrupado: ",
             "Cabo Calculado (mm²): ",
-            "Corrente de Cabo (A): "
-
+            "Capa. de Condução do Cabo (A): ",
+            "Temperatura Ambiente: ",
+            "Queda de Tenção: ",
+            "Distancia de Inst.Cabo: ",
+            "Cabo Trifasico: "
         )
         val InfoToCabo = listOf(
             "${tensao}",
@@ -297,7 +374,11 @@ class CalcularCaboScreen(
             "${condutorCarregado}",
             "${quantidadeDeCircuito}",
             "${caboCalculado}",
-            "${correnteDeSuporteCabo}"
+            "${correnteDeSuporteCabo}",
+            "${temperatura}",
+            "${quedaTensao}",
+            "${distancia}",
+            "${seccaoCaboTrifasico}"
         )
 
         Column(
@@ -326,8 +407,5 @@ class CalcularCaboScreen(
             }
         }
     }
-
-
-
 }
 

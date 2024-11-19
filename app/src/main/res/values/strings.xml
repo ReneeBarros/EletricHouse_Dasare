@@ -41,6 +41,22 @@
         <item>220</item>
     </string-array>
 
+    <string-array name ="TensaoParaCalCabo">
+        <item>Tensao</item>
+        <item>110</item>
+        <item>220</item>
+        <item>380</item>
+    </string-array>
+
+    <string-array name ="quedaTensao">
+        <item>Queda de Tensão</item>
+        <item>7%</item>
+        <item>6%</item>
+        <item>5%</item>
+        <item>4%</item>
+        <item>3%</item>
+    </string-array>
+
     <string-array name ="Boolean">
         <item>Insidencia Solar</item>
         <item>Sim</item>
@@ -181,8 +197,8 @@
 
     <string-array name="condutoresCarregado">
       <item>Condutores Carregado</item>
-      <item>Monofaico a dois Condutors: 2</item>
-      <item>Monofaico a três Condutors: 2</item>
+      <item>Monofásico a dois Condutores: 2</item>
+      <item>Monofásico a três Condutores: 2</item>
       <item>Duas fases sem neutro: 2</item>
       <item>Duas fases com neutro: 3</item>
       <item>Trifásico sem neutro: 3</item>
@@ -225,7 +241,7 @@
     </string-array>
 
     <string-array name="Temperatura_Amb">
-        <item>Temp.Ambiente</item>
+        <item>Temp. Ambiente</item>
         <item>15</item>
         <item>20</item>
         <item>25</item>
