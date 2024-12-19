@@ -1,6 +1,7 @@
 package com.example.nativeeletrichouse.di
 
 import android.content.Context
+import androidx.navigation.NavController
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -9,12 +10,15 @@ import com.example.nativeeletrichouse.data.db.EletricHouseDataBase
 import com.example.nativeeletrichouse.data.db.dao.AmbienteDao
 import com.example.nativeeletrichouse.domain.calcularcabo.implemnets.CalculoCaboEletricoImp
 import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
+import com.example.nativeeletrichouse.presation.solar.offgrid.OffGridSolarScreen
+import com.example.nativeeletrichouse.presation.solar.offgrid.OffGridSolarStateHolder
 import com.example.nativeeletrichouse.repository.AmbienteRepository
 import com.example.nativeeletrichouse.viewmodel.ViewModelAmbiente
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.scope.get
 import org.koin.dsl.module
+import kotlin.math.sin
 
 val appModule = module {
 
@@ -44,6 +48,9 @@ val storeModule = module {
     single {
         get<EletricHouseDataBase>().ambienteDao()
     }
+
+    single { OffGridSolarStateHolder() }
+
     factory<AmbienteRepository> { AmbienteRepository(get()) }
 
     viewModel { ViewModelAmbiente(get())}

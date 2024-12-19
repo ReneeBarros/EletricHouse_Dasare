@@ -1,18 +1,12 @@
 package com.example.nativeeletrichouse.presation.solar
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
@@ -23,12 +17,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.nativeeletrichouse.R
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
@@ -75,42 +65,30 @@ class SystemSolarScreen {
                         img = R.drawable.solar_off_greed, description = "placa solar",
                         {
                             navController.navigate(
-                                HomeGraph.dataUi(
-                                    ilum = false,
-                                    tom = false,
-                                    ac = false,
-                                    home = true
-                                )
+                                HomeGraph.solarOffGrid
                             )
                         },
                         false,
-                        title = "Off Creed",
+                        title = stringResource(R.string.OffGrid),
                         modifier = Modifier.height(160.dp),
                         textCentral = true,
-                        textCentralConteudo = "Off Grid"
+                        textCentralConteudo = stringResource(R.string.OffGrid)
                     )
 
                     CardItem(
                         img = R.drawable.sistema_on_grid, description = "placa solar",
                         {
                             navController.navigate(
-                                HomeGraph.dataUi(
-                                    ilum = false,
-                                    tom = false,
-                                    ac = false,
-                                    home = true
-                                )
+                                HomeGraph.solarOffGrid
                             )
                         },
                         false,
-                        title = "Off Creed",
+                        title = stringResource(R.string.OnGrid),
                         modifier = Modifier.height(160.dp),
                         textCentral = true,
-                        textCentralConteudo = "On Grid"
+                        textCentralConteudo = stringResource(R.string.OnGrid)
                     )
                 }
-
-
             }
         }
     }

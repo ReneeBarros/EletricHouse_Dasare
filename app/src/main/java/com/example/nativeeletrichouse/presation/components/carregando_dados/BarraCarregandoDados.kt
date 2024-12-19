@@ -1,4 +1,4 @@
-package com.example.nativeeletrichouse.presation.carregando_dados
+package com.example.nativeeletrichouse.presation.components.carregando_dados
 
 
 import androidx.compose.foundation.layout.Arrangement

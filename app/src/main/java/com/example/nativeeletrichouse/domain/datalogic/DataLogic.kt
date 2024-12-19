@@ -191,13 +191,5 @@ class DataLogic {
             listAmbienteHome.add(request)
             FancyToast.makeText(context, "Adicionado", FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show()
         }
-
-
-
-
-
-
-
-
     }
 }

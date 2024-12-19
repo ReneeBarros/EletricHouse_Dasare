@@ -791,6 +791,7 @@ class ShowResultScreen {
                             onDismissRequest = {
                                 FancyToast.makeText(context,
                                     "cancelado",FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show()
+                                stateHolder.setShowAlertDialog(value = false)
                             },
                             onConfirmation = {
                                 scope.launch {

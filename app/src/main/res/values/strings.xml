@@ -254,5 +254,69 @@
         <item>60</item>
     </string-array>
 
+    <string-array name="Hours">
+        <item>Horas por Dia</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="VoltagemdoBancodeBateria">
+        <item>Voltagem Do Banco de bateria</item>
+        <item>12</item>
+        <item>24</item>
+        <item>48</item>
+    </string-array>
+
+    <string-array name="VoltagemBateria">
+        <item>Voltagem Da bateria</item>
+        <item>12</item>
+        <item>24</item>
+        <item>48</item>
+    </string-array>
+
+    <string-array name="Potencia_Painel">
+        <item>Voltagem Da bateria</item>
+        <item>150</item>
+        <item>280</item>
+        <item>340</item>
+        <item>450</item>
+        <item>550</item>
+        <item>555</item>
+        <item>670</item>
+    </string-array>
+
+    <string-array name="metodoInstalacao">
+        <item>Metodo de Instalacão</item>
+        <item>Estrutura no Solo</item>
+        <item>Laje ou Telhado Com espaco</item>
+        <item>Sobre o Telhado com ventilacao</item>
+        <item>Sobre o Telhado Sem ventilacao</item>
+    </string-array>
+
+    <string-array name="Prof_Descarga_Banco_Bateria">
+        <item>Profundidade De Descarga do Banco de Bateria</item>
+        <item>10%</item>
+        <item>20%</item>
+        <item>30%</item>
+        <item>40%</item>
+        <item>50%</item>
+        <item>60%</item>
+        <item>70%</item>
+        <item>80%</item>
+        <item>90%</item>
+        <item>100%</item>
+    </string-array>
+
+
+    <string name="OffGrid">OffGrid</string>
+    <string name="OnGrid">OnGrid</string>
 
 </resources>

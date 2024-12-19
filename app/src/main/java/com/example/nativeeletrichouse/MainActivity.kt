@@ -19,8 +19,8 @@ import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.example.nativeeletrichouse.api.api_eletri_house.ApiEletricHouse
 import com.example.nativeeletrichouse.data.db.entity.AmbienteEntity
-import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoIluminacao
+import com.example.nativeeletrichouse.data.reponse.ResponseFromCalculatedSistemSolar
 import com.example.nativeeletrichouse.domain.calcularcabo.intefaces.CalculoCaboEletricoInterFace
 import com.example.nativeeletrichouse.dto.DtoResponseEletricHouse
 import com.example.nativeeletrichouse.main.core.navigation.HomeGraph
@@ -33,6 +33,10 @@ import com.example.nativeeletrichouse.presation.iluminacao.CalcularIluminacaoScr
 import com.example.nativeeletrichouse.presation.mainui.MainScreen
 import com.example.nativeeletrichouse.presation.showresult.ShowResultScreen
 import com.example.nativeeletrichouse.presation.solar.SystemSolarScreen
+import com.example.nativeeletrichouse.presation.solar.offgrid.OffGridSolarScreen
+import com.example.nativeeletrichouse.presation.solar.offgrid.OffGridSolarStateHolder
+import com.example.nativeeletrichouse.presation.solar.offgrid.OffGridSolarUiState
+import com.example.nativeeletrichouse.presation.solar.offgrid.ShowSolarSistem
 import com.example.nativeeletrichouse.presation.tomada.CalcularTomadaScreen
 import com.example.nativeeletrichouse.presation.tomada.ShowResultTomadaScreen
 import com.example.nativeeletrichouse.ui.theme.NativeEletrichouseTheme
@@ -59,6 +63,7 @@ class MainActivity : ComponentActivity() {
                         val caboEletricoInterFace: CalculoCaboEletricoInterFace by inject()
                         val context = LocalContext.current
                         val api : ApiEletricHouse by inject()
+                        val offgridStadeholder: OffGridSolarStateHolder by inject()
 
                         NavHost(
                             navController = navController,
@@ -125,6 +130,17 @@ class MainActivity : ComponentActivity() {
                                )
                             }
 
+                            composable<ResponseFromCalculatedSistemSolar> {
+                                    bringData ->
+                                val bring: ResponseFromCalculatedSistemSolar = bringData.toRoute()
+                                ShowSolarSistem(
+                                    navController = navController,
+                                    response = bring,
+                                )
+
+                            }
+
+
 
                             composable<ResponseCalculoIluminacao> {
                                     bringData ->
@@ -136,7 +152,7 @@ class MainActivity : ComponentActivity() {
                                         largura = bring.largura,
                                         comprimento = bring.comprimento,
                                         tensao = bring.tensao,
-                                        area = bring.area.toFloat(),
+                                        area = bring.area.replace(",",".").toFloat(),
                                         lumensAmbiente = bring.lumensAmbiente,
                                         lumensLuminaria = bring.lumensLuminaria,
                                         lumensTotal = bring.lumensTotal,
@@ -149,6 +165,13 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 )
 
+                            }
+
+                            composable<HomeGraph.solarOffGrid> {
+                                OffGridSolarScreen(
+                                    navController = navController,
+                                    offgridStadeholder
+                                ).OffGridSolarUiScreen()
                             }
 
                             composable<HomeGraph.dataUi> { bringData ->
@@ -164,6 +187,7 @@ class MainActivity : ComponentActivity() {
 
                                 )
                             }
+
                             composable<HomeGraph.ShowResultData> {
                                     bringData ->
                                 val bring: HomeGraph.ShowResultData = bringData.toRoute()

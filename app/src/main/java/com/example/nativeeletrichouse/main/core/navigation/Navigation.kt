@@ -38,6 +38,9 @@ sealed class HomeGraph{
     @Serializable
     object calcularTomada
 
+    @Serializable
+    object solarOffGrid
+
 
     @Serializable
     data class dataUi(

@@ -5,6 +5,7 @@ import com.example.nativeeletrichouse.data.reponse.ResponseCaculateAmbiente
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoArCond
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoIluminacao
 import com.example.nativeeletrichouse.data.reponse.ResponseCalculoTomada
+import com.example.nativeeletrichouse.data.reponse.ResponseFromCalculatedSistemSolar
 import com.example.nativeeletrichouse.data.request.RequestCalculateAmbiente
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -34,8 +35,8 @@ class ApiEletricHouse {
         }
     }
 
-    private val BASE_URL = "http://dasare-eletrichouse-dev.sa-east-1.elasticbeanstalk.com/"
-
+    //private val BASE_URL = "http://dasare-eletrichouse-dev.sa-east-1.elasticbeanstalk.com/"
+    private val BASE_URL = "http://192.168.18.10:8080/"
 
     val context = LocalContext
 
@@ -102,4 +103,17 @@ class ApiEletricHouse {
 
         return responseAmbiente.body<List<ResponseCaculateAmbiente>>()
     }
+
+    suspend fun apiCalcularSistemaSolarOffgrid(
+        requestCalSistema: Any
+    ):ResponseFromCalculatedSistemSolar{
+        val urlCalAmbinete = "api/v1/CompleteSistem/solarsistem"
+
+        val responseAmbiente = client.post(BASE_URL + urlCalAmbinete ){
+            contentType(ContentType.Application.Json)
+            setBody(requestCalSistema)
+        }
+        return responseAmbiente.body()
+    }
+
 }
